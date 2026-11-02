@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-11-02 19:31:13 Rome",
+  "as_of": "2026-11-02 19:31:29 Rome",
   "as_of_hm": "19:31",
   "mode": "PAPER",
   "session": {
@@ -31,7 +31,7 @@
     "target_stack_usd": 50.0,
     "scanner_passed": 49,
     "scanner_killed": 610,
-    "scanner_waiting": 0
+    "scanner_waiting": 1
   },
   "past_sessions": [
     {
@@ -327,11 +327,11 @@
     {
       "id": "scanner",
       "name": "Scanner",
-      "last_activity": "2026-11-02 19:31:13 Rome",
+      "last_activity": "2026-11-02 19:31:29 Rome",
       "last_hm": "19:31",
       "status": "active",
       "process_running": true,
-      "detail": "passes=49 kills=610 waiting=0"
+      "detail": "passes=49 kills=610 waiting=1"
     },
     {
       "id": "auditor",
@@ -363,7 +363,7 @@
     {
       "id": "risk",
       "name": "MemecoinRisk",
-      "last_activity": "2026-11-02 19:31:10 Rome",
+      "last_activity": "2026-11-02 19:31:25 Rome",
       "last_hm": "19:31",
       "status": "active",
       "process_running": true,
@@ -380,6 +380,20 @@
     }
   ],
   "waiting_room": [
+    {
+      "source": "scanner_waiting",
+      "symbol": "X",
+      "mint": "GzcnKMQPyzSLVikR57zS67u1QQLrFfghqPJkJxvBpump",
+      "ts": "2026-11-02T19:31:29.433454+01:00",
+      "liquidity_usd": 28352.2831,
+      "stage": "in attesa Scanner",
+      "links": {
+        "dexscreener": "https://dexscreener.com/solana/GzcnKMQPyzSLVikR57zS67u1QQLrFfghqPJkJxvBpump",
+        "solscan": "https://solscan.io/token/GzcnKMQPyzSLVikR57zS67u1QQLrFfghqPJkJxvBpump",
+        "birdeye": "https://birdeye.so/token/GzcnKMQPyzSLVikR57zS67u1QQLrFfghqPJkJxvBpump?chain=solana",
+        "pumpfun": "https://pump.fun/coin/GzcnKMQPyzSLVikR57zS67u1QQLrFfghqPJkJxvBpump"
+      }
+    },
     {
       "source": "scanner_pass",
       "symbol": "horse",
