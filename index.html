@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-title" content="Desk"/>
+<meta name="theme-color" content="#eef3fb"/>
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20180%20180%22%3E%3Crect%20width%3D%22180%22%20height%3D%22180%22%20rx%3D%2240%22%20fill%3D%22%23142033%22/%3E%3Ctext%20x%3D%2290%22%20y%3D%22118%22%20text-anchor%3D%22middle%22%20font-family%3D%22-apple-system%2CBlinkMacSystemFont%2CArial%2Csans-serif%22%20font-size%3D%2292%22%20font-weight%3D%22800%22%20fill%3D%22%230f9d6e%22%3ED%3C/text%3E%3C/svg%3E"/>
+<title>Memecoin Desk — PAPER</title>
+<style>
+:root {
+  --bg0:#eef3fb; --bg1:#f7f1ea; --card:#ffffff; --text:#142033; --muted:#6b7a90;
+  --line:#e6ebf3; --good:#0f9d6e; --good-bg:#e6f7f0; --bad:#d64545; --bad-bg:#fdecec;
+  --accent:#2f6fed; --paper:#8a6d1d; --paper-bg:#fff4d6; --shadow:0 8px 28px rgba(20,32,51,.08);
+  --radius:18px; --tap:46px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+* { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html,body { margin:0; padding:0; color:var(--text); font-family:var(--font); }
+body {
+  min-height:100vh;
+  background:linear-gradient(165deg,var(--bg0) 0%, #f5f7fb 42%, var(--bg1) 100%);
+  padding:16px 14px 56px; max-width:440px; margin:0 auto; line-height:1.35;
+}
+header { display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin-bottom:14px; }
+h1 { font-size:1.35rem; margin:0; font-weight:800; letter-spacing:-0.02em; }
+h2 { font-size:1.02rem; margin:0 0 12px; font-weight:700; letter-spacing:-0.01em; }
+h3 { font-size:0.92rem; margin:0 0 8px; font-weight:700; }
+.badge { display:inline-flex; align-items:center; padding:5px 11px; border-radius:999px;
+  font-size:0.72rem; font-weight:800; letter-spacing:0.06em; background:var(--paper-bg); color:var(--paper); }
+.asof { width:100%; color:var(--muted); font-size:0.78rem; }
+.card { background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow);
+  padding:16px; margin-bottom:14px; border:1px solid rgba(255,255,255,.7); }
+.hero { text-align:center; padding:22px 16px 18px; }
+.hero .lbl { color:var(--muted); font-size:0.78rem; font-weight:600; text-transform:uppercase; letter-spacing:.06em; }
+.hero .equity { font-size:2.55rem; font-weight:800; letter-spacing:-0.04em; margin:4px 0 2px; font-variant-numeric:tabular-nums; }
+.hero .stack { color:var(--muted); font-size:0.9rem; margin-bottom:10px; }
+.hero .pnl { font-size:1.25rem; font-weight:700; font-variant-numeric:tabular-nums; }
+.pos { color:var(--good); } .neg { color:var(--bad); }
+.progress { margin-top:14px; text-align:left; }
+.progress .meta { display:flex; justify-content:space-between; font-size:0.75rem; color:var(--muted); margin-bottom:6px; }
+.bar { height:10px; background:#edf1f7; border-radius:999px; overflow:hidden; }
+.bar > span { display:block; height:100%; border-radius:999px; background:linear-gradient(90deg,#5b8def,#2f6fed); }
+.stats { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.stat { background:#f7f9fc; border-radius:14px; padding:12px; }
+.stat .lbl { color:var(--muted); font-size:0.7rem; font-weight:600; text-transform:uppercase; letter-spacing:.04em; }
+.stat .val { font-size:1.15rem; font-weight:800; margin-top:2px; font-variant-numeric:tabular-nums; }
+.trade-card { background:#f8fafc; border-radius:14px; padding:14px; margin-bottom:10px; border:1px solid var(--line); }
+.trade-card .top { display:flex; justify-content:space-between; align-items:flex-start; gap:8px; }
+.trade-card .sym { font-size:1.05rem; font-weight:800; }
+.trade-card .pnlbig { font-size:1.15rem; font-weight:800; font-variant-numeric:tabular-nums; }
+.kv { display:grid; grid-template-columns:1fr 1fr; gap:6px 10px; margin-top:10px; font-size:0.82rem; }
+.kv .k { color:var(--muted); } .kv .v { font-weight:600; font-variant-numeric:tabular-nums; }
+.unreal { margin-top:10px; padding:10px 12px; border-radius:12px; font-weight:800; text-align:center; }
+.unreal.pos { background:var(--good-bg); color:var(--good); }
+.unreal.neg { background:var(--bad-bg); color:var(--bad); }
+.note { color:var(--muted); font-size:0.85rem; }
+.pill { display:inline-flex; align-items:center; padding:3px 9px; border-radius:999px; font-size:0.72rem; font-weight:700; }
+.pill.active { background:var(--good-bg); color:var(--good); }
+.pill.stale { background:#fff3df; color:#a06a00; }
+.pill.KILL,.pill.REJECT,.pill.kill,.pill.reject { background:var(--bad-bg); color:var(--bad); }
+.pill.PASS,.pill.pass { background:var(--good-bg); color:var(--good); }
+.seg { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; }
+.seg button, .btn { min-height:var(--tap); padding:10px 14px; border-radius:999px; border:1px solid var(--line);
+  background:#fff; color:var(--text); font-size:0.9rem; cursor:pointer; box-shadow:0 1px 2px rgba(20,32,51,.04); }
+.seg button.on { background:var(--accent); color:#fff; border-color:var(--accent); font-weight:700; }
+.btn.primary { background:var(--accent); color:#fff; border-color:var(--accent); font-weight:700; }
+.btn-row { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+.mono { font-family:var(--mono); font-size:0.72rem; color:var(--muted); word-break:break-all; }
+.links a { color:var(--accent); text-decoration:none; margin-right:10px; font-size:0.82rem; font-weight:600; }
+.reason { color:var(--muted); font-size:0.8rem; word-break:break-word; margin-top:4px; }
+.row { padding:12px 0; border-bottom:1px solid var(--line); }
+.row:last-child { border-bottom:0; }
+.chart { width:100%; height:140px; margin-top:4px; }
+details.agent { background:#f8fafc; border:1px solid var(--line); border-radius:14px; margin-bottom:10px; }
+details.agent summary { list-style:none; cursor:pointer; padding:14px; display:flex; align-items:center;
+  justify-content:space-between; gap:8px; min-height:var(--tap); }
+details.agent summary::-webkit-details-marker { display:none; }
+details.agent .body { padding:0 14px 14px; }
+.field { margin-bottom:14px; padding:12px; border-radius:12px; border:1px solid transparent; background:#fff; }
+.field.changed { background:#fff8e8; border-color:#f0d48a; }
+.field label { display:block; font-size:0.84rem; font-weight:600; margin-bottom:8px; }
+.field .src { color:var(--muted); font-size:0.68rem; margin-top:6px; word-break:break-word; }
+.field .unk { color:#a06a00; font-size:0.75rem; margin-bottom:4px; }
+.ctrl { display:flex; gap:8px; align-items:center; }
+.ctrl input[type=range] { flex:1; min-height:32px; }
+.ctrl input[type=number], .ctrl select { width:100px; min-height:var(--tap); border-radius:12px;
+  border:1px solid var(--line); background:#fff; color:var(--text); padding:8px; font-size:1rem; }
+.ctrl select { width:auto; min-width:140px; flex:1; }
+.msgbox { width:100%; min-height:90px; border-radius:12px; border:1px solid var(--line);
+  background:#fff; color:var(--text); padding:10px; font-family:var(--mono); font-size:0.75rem; }
+.toast { position:fixed; bottom:18px; left:50%; transform:translateX(-50%); background:#142033;
+  color:#fff; padding:12px 18px; border-radius:999px; font-size:0.85rem; opacity:0;
+  pointer-events:none; transition:opacity .2s; z-index:9; }
+.toast.show { opacity:1; }
+.empty { color:var(--muted); font-size:0.9rem; }
+.btn.busy { opacity:0.75; pointer-events:none; }
+.btn .spin {
+  display:inline-block; width:14px; height:14px; margin-right:8px;
+  border:2px solid rgba(20,32,51,.2); border-top-color:var(--accent);
+  border-radius:50%; vertical-align:-2px;
+  -webkit-animation:spin .7s linear infinite; animation:spin .7s linear infinite;
+}
+@-webkit-keyframes spin { to { -webkit-transform:rotate(360deg); transform:rotate(360deg); } }
+@keyframes spin { to { -webkit-transform:rotate(360deg); transform:rotate(360deg); } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Memecoin Desk</h1>
+  <span class="badge">PAPER</span>
+  <div class="asof" id="asof"></div>
+  <div class="btn-row" style="width:100%;margin:0">
+    <button class="btn" type="button" id="btn-refresh">Aggiorna</button>
+    <span class="note" id="auto-note">auto 60s</span>
+  </div>
+</header>
+
+<section class="card hero" id="sec-hero"></section>
+<section class="card" id="sec-stats"><h2>Statistiche</h2><div class="stats" id="stats"></div></section>
+<section class="card" id="sec-chart"><h2>Equity / trade</h2><div id="chart"></div></section>
+<section class="card" id="sec-open"><h2>Posizioni aperte</h2><div id="open"></div></section>
+<section class="card" id="sec-closes"><h2>Big closes · sessione corrente</h2><div id="closes"></div></section>
+<section class="card" id="sec-past"><h2>Sessioni precedenti</h2><div id="past"></div></section>
+<section class="card" id="sec-waiting"><h2>Waiting room / Scanner</h2><div id="waiting"></div></section>
+<section class="card" id="sec-dec"><h2>Ultimi pass / reject</h2><div class="seg" id="dec-filter"></div><div id="decisions"></div></section>
+<section class="card" id="sec-agents"><h2>Stato agenti</h2><div id="agents"></div></section>
+<section class="card" id="sec-links"><h2>Link utili</h2><div id="links"></div></section>
+<section class="card" id="sec-settings">
+  <h2>Impostazioni agenti</h2>
+  <p class="note">Solo PAPER. La pagina è statica verso gli agenti: genera messaggi da inoltrare.</p>
+  <div id="settings"></div>
+  <div class="btn-row">
+    <button class="btn primary" type="button" id="btn-copy-all">Copia tutto</button>
+    <button class="btn primary" type="button" id="btn-send-all">Invia a DeskDashboard</button>
+    <button class="btn" type="button" id="btn-reset">Ripristina</button>
+  </div>
+  <textarea class="msgbox" id="msg-all" readonly placeholder="Nessuna modifica…" style="margin-top:10px"></textarea>
+  <p class="note">Incolla il messaggio nella chat di DeskDashboard per inoltrarlo, oppure usa «Invia a DeskDashboard».</p>
+  <p class="note" id="send-status" style="color:var(--good)"></p>
+</section>
+<div class="toast" id="toast"></div>
+
+<script>
+var DATA = {"as_of": "2026-11-02 18:59:11 Rome", "as_of_hm": "18:59", "mode": "PAPER", "session": {"number": 2, "started_at": "2026-11-02T18:43:00+01:00", "start_stack_usd": 200.0, "label": "Sessione 2"}, "summary": {"session": 2, "stack_initial_usd": 200.0, "stack_source": "paper/state.json start_stack_usd", "cash_after_last_buy_usd": null, "equity_usd": 200.0, "realized_pnl_usd": 0, "unrealized_pnl_usd": 0, "total_pnl_usd": 0, "wins": 0, "losses": 0, "n_open": 0, "n_closed": 0, "n_exits": 0, "n_trades": 0, "win_rate_pct": null, "avg_win_usd": null, "avg_loss_usd": null, "total_pnl_pct_stack": 0.0, "progress_to_stack_pct": 100.0, "target_stack_usd": 200.0, "scanner_passed": 42, "scanner_killed": 529, "scanner_waiting": 0}, "past_sessions": [{"session": 1, "label": "Sessione 1", "started_at": "2026-11-02T15:52+01:00", "ended_at": "2026-11-02T18:43:00+01:00", "start_stack_usd": 200.0, "end_stack_usd": 63.07, "realized_pnl_usd": -136.93, "trades": 9, "wins": 3, "losses": 6, "win_rate_pct": 33.3, "trade_list": [{"ts": "2026-11-02T16:50:44+01:00", "opened_at": "2026-11-02T15:52:00+01:00", "symbol": "FI", "mint": "ELVgHjHrofkijCmD5WM965ApJZaBVt9RFiyrXw6pump", "pnl_usd": -45.51447636, "pnl_pct": -95.81995, "exit_reason": "stop", "entry_price_usd": 4.421e-05, "exit_price_usd": 1.848e-06, "size_usd": 47.5, "take_profit_price_usd": 4.77468e-05, "stop_price_usd": 4.1557399999999996e-05, "links": {"dexscreener": "https://dexscreener.com/solana/ELVgHjHrofkijCmD5WM965ApJZaBVt9RFiyrXw6pump", "solscan": "https://solscan.io/token/ELVgHjHrofkijCmD5WM965ApJZaBVt9RFiyrXw6pump", "birdeye": "https://birdeye.so/token/ELVgHjHrofkijCmD5WM965ApJZaBVt9RFiyrXw6pump?chain=solana", "pumpfun": "https://pump.fun/coin/ELVgHjHrofkijCmD5WM965ApJZaBVt9RFiyrXw6pump"}}, {"ts": "2026-11-02T16:50:44+01:00", "opened_at": "2026-11-02T16:24:00+01:00", "symbol": "pedolon", "mint": "DgCYgaeinMPV5pB3KQtUhwjev3FUWmSbqPzxndpVpump", "pnl_usd": -45.63715538, "pnl_pct": -96.078222, "exit_reason": "stop", "entry_price_usd": 4.679e-05, "exit_price_usd": 1.835e-06, "size_usd": 47.5, "take_profit_price_usd": 5.05332e-05, "stop_price_usd": 4.3982599999999995e-05, "links": {"dexscreener": "https://dexscreener.com/solana/DgCYgaeinMPV5pB3KQtUhwjev3FUWmSbqPzxndpVpump", "solscan": "https://solscan.io/token/DgCYgaeinMPV5pB3KQtUhwjev3FUWmSbqPzxndpVpump", "birdeye": "https://birdeye.so/token/DgCYgaeinMPV5pB3KQtUhwjev3FUWmSbqPzxndpVpump?chain=solana", "pumpfun": "https://pump.fun/coin/DgCYgaeinMPV5pB3KQtUhwjev3FUWmSbqPzxndpVpump"}}, {"ts": "2026-11-02T16:50:44+01:00", "opened_at": "2026-11-02T16:30:00+01:00", "symbol": "Pirate", "mint": "FzmCNc3PqTc1NmFbVZDpJNFNHsSnrwNnDKfKksH8pump", "pnl_usd": -44.10297984, "pnl_pct": -92.848379, "exit_reason": "stop", "entry_price_usd": 3.423e-05, "exit_price_usd": 2.448e-06, "size_usd": 47.5, "take_profit_price_usd": 3.69684e-05, "stop_price_usd": 3.21762e-05, "links": {"dexscreener": "https://dexscreener.com/solana/FzmCNc3PqTc1NmFbVZDpJNFNHsSnrwNnDKfKksH8pump", "solscan": "https://solscan.io/token/FzmCNc3PqTc1NmFbVZDpJNFNHsSnrwNnDKfKksH8pump", "birdeye": "https://birdeye.so/token/FzmCNc3PqTc1NmFbVZDpJNFNHsSnrwNnDKfKksH8pump?chain=solana", "pumpfun": "https://pump.fun/coin/FzmCNc3PqTc1NmFbVZDpJNFNHsSnrwNnDKfKksH8pump"}}, {"ts": "2026-11-02T16:50:44+01:00", "opened_at": "2026-11-02T16:49:00+01:00", "symbol": "SPX7900", "mint": "4RWKWQD4x8sKnchHDPVbMaMouW9PuiuVZKb9g8rGpump", "pnl_usd": 6.59987437, "pnl_pct": 13.894472, "exit_reason": "take_profit", "entry_price_usd": 3.98e-05, "exit_price_usd": 4.533e-05, "size_usd": 47.5, "take_profit_price_usd": 4.2984e-05, "stop_price_usd": 3.7411999999999993e-05, "links": {"dexscreener": "https://dexscreener.com/solana/4RWKWQD4x8sKnchHDPVbMaMouW9PuiuVZKb9g8rGpump", "solscan": "https://solscan.io/token/4RWKWQD4x8sKnchHDPVbMaMouW9PuiuVZKb9g8rGpump", "birdeye": "https://birdeye.so/token/4RWKWQD4x8sKnchHDPVbMaMouW9PuiuVZKb9g8rGpump?chain=solana", "pumpfun": "https://pump.fun/coin/4RWKWQD4x8sKnchHDPVbMaMouW9PuiuVZKb9g8rGpump"}}, {"ts": "2026-11-02T17:08:30+01:00", "opened_at": "2026-11-02T17:07:00+01:00", "symbol": "HI", "mint": "cMzxKhgHsL3HQdnjMHRt2b6FYmQAWr29fR8GUTWpump", "pnl_usd": -3.6868473, "pnl_pct": -7.761784, "exit_reason": "stop", "entry_price_usd": 3.543e-05, "exit_price_usd": 3.268e-05, "size_usd": 47.5, "take_profit_price_usd": 3.82644e-05, "stop_price_usd": 3.33042e-05, "links": {"dexscreener": "https://dexscreener.com/solana/cMzxKhgHsL3HQdnjMHRt2b6FYmQAWr29fR8GUTWpump", "solscan": "https://solscan.io/token/cMzxKhgHsL3HQdnjMHRt2b6FYmQAWr29fR8GUTWpump", "birdeye": "https://birdeye.so/token/cMzxKhgHsL3HQdnjMHRt2b6FYmQAWr29fR8GUTWpump?chain=solana", "pumpfun": "https://pump.fun/coin/cMzxKhgHsL3HQdnjMHRt2b6FYmQAWr29fR8GUTWpump"}}, {"ts": "2026-11-02T17:42:16+01:00", "opened_at": "2026-11-02T17:41:00+01:00", "symbol": "RICO", "mint": "4cuAN6K3toKpah4YeNyHu9jUcChRjB9kjnUfxUJEpump", "pnl_usd": 5.18449612, "pnl_pct": 10.914729, "exit_reason": "take_profit", "entry_price_usd": 3.225e-05, "exit_price_usd": 3.577e-05, "size_usd": 47.5, "take_profit_price_usd": 3.483e-05, "stop_price_usd": 3.0314999999999997e-05, "links": {"dexscreener": "https://dexscreener.com/solana/4cuAN6K3toKpah4YeNyHu9jUcChRjB9kjnUfxUJEpump", "solscan": "https://solscan.io/token/4cuAN6K3toKpah4YeNyHu9jUcChRjB9kjnUfxUJEpump", "birdeye": "https://birdeye.so/token/4cuAN6K3toKpah4YeNyHu9jUcChRjB9kjnUfxUJEpump?chain=solana", "pumpfun": "https://pump.fun/coin/4cuAN6K3toKpah4YeNyHu9jUcChRjB9kjnUfxUJEpump"}}, {"ts": "2026-11-02T17:43:07+01:00", "opened_at": "2026-11-02T17:42:00+01:00", "symbol": "Artcoin", "mint": "9RtW41CxyhFvk1kmMMaNtPDDzmQPLsYxiLVzYdNwpump", "pnl_usd": -17.14924039, "pnl_pct": -36.103664, "exit_reason": "stop", "entry_price_usd": 3.357e-05, "exit_price_usd": 2.145e-05, "size_usd": 47.5, "take_profit_price_usd": 3.62556e-05, "stop_price_usd": 3.15558e-05, "links": {"dexscreener": "https://dexscreener.com/solana/9RtW41CxyhFvk1kmMMaNtPDDzmQPLsYxiLVzYdNwpump", "solscan": "https://solscan.io/token/9RtW41CxyhFvk1kmMMaNtPDDzmQPLsYxiLVzYdNwpump", "birdeye": "https://birdeye.so/token/9RtW41CxyhFvk1kmMMaNtPDDzmQPLsYxiLVzYdNwpump?chain=solana", "pumpfun": "https://pump.fun/coin/9RtW41CxyhFvk1kmMMaNtPDDzmQPLsYxiLVzYdNwpump"}}, {"ts": "2026-11-02T17:48:05+01:00", "opened_at": "2026-11-02T17:45:00+01:00", "symbol": "Doomscroll", "mint": "EAVNnfXHCyr5qNHGpRjwVaz88NUy7kSSpVpQTRphpump", "pnl_usd": 10.45172146, "pnl_pct": 22.003624, "exit_reason": "take_profit", "entry_price_usd": 3.863e-05, "exit_price_usd": 4.713e-05, "size_usd": 47.5, "take_profit_price_usd": 4.17204e-05, "stop_price_usd": 3.63122e-05, "links": {"dexscreener": "https://dexscreener.com/solana/EAVNnfXHCyr5qNHGpRjwVaz88NUy7kSSpVpQTRphpump", "solscan": "https://solscan.io/token/EAVNnfXHCyr5qNHGpRjwVaz88NUy7kSSpVpQTRphpump", "birdeye": "https://birdeye.so/token/EAVNnfXHCyr5qNHGpRjwVaz88NUy7kSSpVpQTRphpump?chain=solana", "pumpfun": "https://pump.fun/coin/EAVNnfXHCyr5qNHGpRjwVaz88NUy7kSSpVpQTRphpump"}}, {"ts": "2026-11-02T17:48:15+01:00", "opened_at": "2026-11-02T17:46:00+01:00", "symbol": "LILY", "mint": "FZs4YUPyD5sMzUv5fwiWBQx3s9Nzgvw62g8ytohwpump", "pnl_usd": -3.07553957, "pnl_pct": -6.47482, "exit_reason": "stop", "entry_price_usd": 3.892e-05, "exit_price_usd": 3.64e-05, "size_usd": 47.5, "take_profit_price_usd": 4.2033600000000004e-05, "stop_price_usd": 3.6584799999999996e-05, "links": {"dexscreener": "https://dexscreener.com/solana/FZs4YUPyD5sMzUv5fwiWBQx3s9Nzgvw62g8ytohwpump", "solscan": "https://solscan.io/token/FZs4YUPyD5sMzUv5fwiWBQx3s9Nzgvw62g8ytohwpump", "birdeye": "https://birdeye.so/token/FZs4YUPyD5sMzUv5fwiWBQx3s9Nzgvw62g8ytohwpump?chain=solana", "pumpfun": "https://pump.fun/coin/FZs4YUPyD5sMzUv5fwiWBQx3s9Nzgvw62g8ytohwpump"}}], "source": "positions.json/exits.jsonl (opened_at \u003c session 2) + tickets_session1_*.csv"}], "session_discrepancies": [{"session": 1, "note": "Mostrati i valori calcolati dai file; state.json session1 differisce", "diffs": ["realized_pnl_usd: file=-136.93 state.json=-136.94", "end_stack_usd: file=63.07 state.json=63.06"], "claimed": {"trades": 9, "wins": 3, "losses": 6, "realized_pnl_usd": -136.94, "end_stack_usd": 63.06}, "computed": {"trades": 9, "wins": 3, "losses": 6, "realized_pnl_usd": -136.93, "end_stack_usd": 63.07}}], "agents": [{"id": "scanner", "name": "Scanner", "last_activity": "2026-11-02 18:59:10 Rome", "last_hm": "18:59", "status": "active", "process_running": true, "detail": "passes=42 kills=529 waiting=0"}, {"id": "auditor", "name": "Auditor", "last_activity": "2026-11-02 18:57:52 Rome", "last_hm": "18:57", "status": "active", "process_running": null, "detail": "verdetti=66"}, {"id": "analyst", "name": "Analyst", "last_activity": "2026-11-02 17:46:40 Rome", "last_hm": "17:46", "status": "stale", "process_running": null, "detail": "decisioni=20"}, {"id": "executor", "name": "Executor", "last_activity": "2026-11-02 18:43:56 Rome", "last_hm": "18:43", "status": "stale", "process_running": null, "detail": "ticket=0"}, {"id": "risk", "name": "MemecoinRisk", "last_activity": "2026-11-02 18:59:08 Rome", "last_hm": "18:59", "status": "active", "process_running": true, "detail": "watcher.py"}, {"id": "watchdog", "name": "Watchdog", "last_activity": "2026-11-02 16:10:24 Rome", "last_hm": "16:10", "status": "stale", "process_running": true, "detail": "watchdog.sh"}], "waiting_room": [{"source": "scanner_pass", "symbol": "MALFOID", "mint": "C3v4Xs6ytkLdgpoxxgTnVxpKnfmij9mLwL1XCvRtpump", "ts": "2026-11-02T18:54:33.199617+01:00", "liquidity_usd": 14528.6791, "stage": "PASS Scanner → in attesa Auditor", "links": {"dexscreener": "https://dexscreener.com/solana/C3v4Xs6ytkLdgpoxxgTnVxpKnfmij9mLwL1XCvRtpump", "solscan": "https://solscan.io/token/C3v4Xs6ytkLdgpoxxgTnVxpKnfmij9mLwL1XCvRtpump", "birdeye": "https://birdeye.so/token/C3v4Xs6ytkLdgpoxxgTnVxpKnfmij9mLwL1XCvRtpump?chain=solana", "pumpfun": "https://pump.fun/coin/C3v4Xs6ytkLdgpoxxgTnVxpKnfmij9mLwL1XCvRtpump"}}, {"source": "scanner_pass", "symbol": "NULL", "mint": "5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump", "ts": "2026-11-02T18:50:54.642979+01:00", "liquidity_usd": 21950.6228, "stage": "PASS Scanner → in attesa Auditor", "links": {"dexscreener": "https://dexscreener.com/solana/5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump", "solscan": "https://solscan.io/token/5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump", "birdeye": "https://birdeye.so/token/5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump?chain=solana", "pumpfun": "https://pump.fun/coin/5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump"}}, {"source": "scanner_pass", "symbol": "PIRATE", "mint": "6mXFCoZ515w37YfmwXGJMPfQfiK5tr9WkihW3oN9pump", "ts": "2026-11-02T18:22:08.310817+01:00", "liquidity_usd": 14696.1313, "stage": "PASS Scanner → in attesa Auditor", "links": {"dexscreener": "https://dexscreener.com/solana/6mXFCoZ515w37YfmwXGJMPfQfiK5tr9WkihW3oN9pump", "solscan": "https://solscan.io/token/6mXFCoZ515w37YfmwXGJMPfQfiK5tr9WkihW3oN9pump", "birdeye": "https://birdeye.so/token/6mXFCoZ515w37YfmwXGJMPfQfiK5tr9WkihW3oN9pump?chain=solana", "pumpfun": "https://pump.fun/coin/6mXFCoZ515w37YfmwXGJMPfQfiK5tr9WkihW3oN9pump"}}, {"source": "scanner_pass", "symbol": "PAUL", "mint": "GnY6RSduqXgJ3nas2CKTDkNbrm2FXYExFxP7BXYEpump", "ts": "2026-11-02T17:47:56.161078+01:00", "liquidity_usd": 15777.6056, "stage": "PASS Scanner → in attesa Auditor", "links": {"dexscreener": "https://dexscreener.com/solana/GnY6RSduqXgJ3nas2CKTDkNbrm2FXYExFxP7BXYEpump", "solscan": "https://solscan.io/token/GnY6RSduqXgJ3nas2CKTDkNbrm2FXYExFxP7BXYEpump", "birdeye": "https://birdeye.so/token/GnY6RSduqXgJ3nas2CKTDkNbrm2FXYExFxP7BXYEpump?chain=solana", "pumpfun": "https://pump.fun/coin/GnY6RSduqXgJ3nas2CKTDkNbrm2FXYExFxP7BXYEpump"}}, {"source": "scanner_pass", "symbol": "Muu-chan", "mint": "G5SbP44FNV8RvQqxnWhCRJVscNghwDMwT5sTkCa4pump", "ts": "2026-11-02T16:00:18.355150+01:00", "liquidity_usd": 20445.0563, "stage": "PASS Auditor → in attesa Analyst", "links": {"dexscreener": "https://dexscreener.com/solana/G5SbP44FNV8RvQqxnWhCRJVscNghwDMwT5sTkCa4pump", "solscan": "https://solscan.io/token/G5SbP44FNV8RvQqxnWhCRJVscNghwDMwT5sTkCa4pump", "birdeye": "https://birdeye.so/token/G5SbP44FNV8RvQqxnWhCRJVscNghwDMwT5sTkCa4pump?chain=solana", "pumpfun": "https://pump.fun/coin/G5SbP44FNV8RvQqxnWhCRJVscNghwDMwT5sTkCa4pump"}}], "recent_scanner_passes": [{"ts": "2026-11-02T18:54:33.199617+01:00", "symbol": "MALFOID", "mint": "C3v4Xs6ytkLdgpoxxgTnVxpKnfmij9mLwL1XCvRtpump", "liquidity_usd": 14528.6791, "price_change_1h_pct": -5.52, "top10_pct_ex_pool": 18.7311, "links": {"dexscreener": "https://dexscreener.com/solana/C3v4Xs6ytkLdgpoxxgTnVxpKnfmij9mLwL1XCvRtpump", "solscan": "https://solscan.io/token/C3v4Xs6ytkLdgpoxxgTnVxpKnfmij9mLwL1XCvRtpump", "birdeye": "https://birdeye.so/token/C3v4Xs6ytkLdgpoxxgTnVxpKnfmij9mLwL1XCvRtpump?chain=solana", "pumpfun": "https://pump.fun/coin/C3v4Xs6ytkLdgpoxxgTnVxpKnfmij9mLwL1XCvRtpump"}}, {"ts": "2026-11-02T18:50:54.642979+01:00", "symbol": "NULL", "mint": "5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump", "liquidity_usd": 21950.6228, "price_change_1h_pct": 113.039, "top10_pct_ex_pool": 21.9773, "links": {"dexscreener": "https://dexscreener.com/solana/5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump", "solscan": "https://solscan.io/token/5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump", "birdeye": "https://birdeye.so/token/5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump?chain=solana", "pumpfun": "https://pump.fun/coin/5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump"}}, {"ts": "2026-11-02T18:46:22.219139+01:00", "symbol": "OI", "mint": "8pBZ8WgdqT3VoWPpDfBkdbLJyNJ1D8gKc2eSkkp2pump", "liquidity_usd": 14096.2058, "price_change_1h_pct": 3.441, "top10_pct_ex_pool": 11.9437, "links": {"dexscreener": "https://dexscreener.com/solana/8pBZ8WgdqT3VoWPpDfBkdbLJyNJ1D8gKc2eSkkp2pump", "solscan": "https://solscan.io/token/8pBZ8WgdqT3VoWPpDfBkdbLJyNJ1D8gKc2eSkkp2pump", "birdeye": "https://birdeye.so/token/8pBZ8WgdqT3VoWPpDfBkdbLJyNJ1D8gKc2eSkkp2pump?chain=solana", "pumpfun": "https://pump.fun/coin/8pBZ8WgdqT3VoWPpDfBkdbLJyNJ1D8gKc2eSkkp2pump"}}, {"ts": "2026-11-02T18:40:37.676369+01:00", "symbol": "FOMO", "mint": "d1y9b9svg232oeH7C35D9ihLQ65CPpS7vn58NyEpump", "liquidity_usd": 26583.5328, "price_change_1h_pct": 13.194, "top10_pct_ex_pool": 8.7563, "links": {"dexscreener": "https://dexscreener.com/solana/d1y9b9svg232oeH7C35D9ihLQ65CPpS7vn58NyEpump", "solscan": "https://solscan.io/token/d1y9b9svg232oeH7C35D9ihLQ65CPpS7vn58NyEpump", "birdeye": "https://birdeye.so/token/d1y9b9svg232oeH7C35D9ihLQ65CPpS7vn58NyEpump?chain=solana", "pumpfun": "https://pump.fun/coin/d1y9b9svg232oeH7C35D9ihLQ65CPpS7vn58NyEpump"}}, {"ts": "2026-11-02T18:40:00.395632+01:00", "symbol": "FRANK", "mint": "2pQ2MKMVtSRaC9KjeN3SoWF54Ee6aagnLs332R93pump", "liquidity_usd": 13226.0536, "price_change_1h_pct": -8.997, "top10_pct_ex_pool": 13.7691, "links": {"dexscreener": "https://dexscreener.com/solana/2pQ2MKMVtSRaC9KjeN3SoWF54Ee6aagnLs332R93pump", "solscan": "https://solscan.io/token/2pQ2MKMVtSRaC9KjeN3SoWF54Ee6aagnLs332R93pump", "birdeye": "https://birdeye.so/token/2pQ2MKMVtSRaC9KjeN3SoWF54Ee6aagnLs332R93pump?chain=solana", "pumpfun": "https://pump.fun/coin/2pQ2MKMVtSRaC9KjeN3SoWF54Ee6aagnLs332R93pump"}}, {"ts": "2026-11-02T18:39:04.323387+01:00", "symbol": "XFIELD", "mint": "CMGSEp7VpQCpcNY8ErwzQzwputAFt6UCdaG8jgCPpump", "liquidity_usd": 13082.7416, "price_change_1h_pct": -26.132, "top10_pct_ex_pool": 25.3495, "links": {"dexscreener": "https://dexscreener.com/solana/CMGSEp7VpQCpcNY8ErwzQzwputAFt6UCdaG8jgCPpump", "solscan": "https://solscan.io/token/CMGSEp7VpQCpcNY8ErwzQzwputAFt6UCdaG8jgCPpump", "birdeye": "https://birdeye.so/token/CMGSEp7VpQCpcNY8ErwzQzwputAFt6UCdaG8jgCPpump?chain=solana", "pumpfun": "https://pump.fun/coin/CMGSEp7VpQCpcNY8ErwzQzwputAFt6UCdaG8jgCPpump"}}, {"ts": "2026-11-02T18:33:53.033495+01:00", "symbol": "Rocky", "mint": "DvEqhCLZgEYVr4JQ93BA33HQ4Kjh6a4znTUFViXjpump", "liquidity_usd": 13735.7089, "price_change_1h_pct": -1.305, "top10_pct_ex_pool": 8.7488, "links": {"dexscreener": "https://dexscreener.com/solana/DvEqhCLZgEYVr4JQ93BA33HQ4Kjh6a4znTUFViXjpump", "solscan": "https://solscan.io/token/DvEqhCLZgEYVr4JQ93BA33HQ4Kjh6a4znTUFViXjpump", "birdeye": "https://birdeye.so/token/DvEqhCLZgEYVr4JQ93BA33HQ4Kjh6a4znTUFViXjpump?chain=solana", "pumpfun": "https://pump.fun/coin/DvEqhCLZgEYVr4JQ93BA33HQ4Kjh6a4znTUFViXjpump"}}, {"ts": "2026-11-02T18:30:56.658380+01:00", "symbol": "BEAST", "mint": "DMYfR7w3fwNtUo5pmJjvHaR2EjkXmYjwPT4W8gBpump", "liquidity_usd": 19159.7879, "price_change_1h_pct": -36.983, "top10_pct_ex_pool": 15.7827, "links": {"dexscreener": "https://dexscreener.com/solana/DMYfR7w3fwNtUo5pmJjvHaR2EjkXmYjwPT4W8gBpump", "solscan": "https://solscan.io/token/DMYfR7w3fwNtUo5pmJjvHaR2EjkXmYjwPT4W8gBpump", "birdeye": "https://birdeye.so/token/DMYfR7w3fwNtUo5pmJjvHaR2EjkXmYjwPT4W8gBpump?chain=solana", "pumpfun": "https://pump.fun/coin/DMYfR7w3fwNtUo5pmJjvHaR2EjkXmYjwPT4W8gBpump"}}, {"ts": "2026-11-02T18:22:08.310817+01:00", "symbol": "PIRATE", "mint": "6mXFCoZ515w37YfmwXGJMPfQfiK5tr9WkihW3oN9pump", "liquidity_usd": 14696.1313, "price_change_1h_pct": -15.975, "top10_pct_ex_pool": 29.6342, "links": {"dexscreener": "https://dexscreener.com/solana/6mXFCoZ515w37YfmwXGJMPfQfiK5tr9WkihW3oN9pump", "solscan": "https://solscan.io/token/6mXFCoZ515w37YfmwXGJMPfQfiK5tr9WkihW3oN9pump", "birdeye": "https://birdeye.so/token/6mXFCoZ515w37YfmwXGJMPfQfiK5tr9WkihW3oN9pump?chain=solana", "pumpfun": "https://pump.fun/coin/6mXFCoZ515w37YfmwXGJMPfQfiK5tr9WkihW3oN9pump"}}, {"ts": "2026-11-02T18:21:50.662395+01:00", "symbol": "TEXR", "mint": "3V7kmhLtC5knMrxDhwb2BdxUj1Ucs7KKfrnc6xr8pump", "liquidity_usd": 15886.0676, "price_change_1h_pct": 0.512, "top10_pct_ex_pool": 23.0588, "links": {"dexscreener": "https://dexscreener.com/solana/3V7kmhLtC5knMrxDhwb2BdxUj1Ucs7KKfrnc6xr8pump", "solscan": "https://solscan.io/token/3V7kmhLtC5knMrxDhwb2BdxUj1Ucs7KKfrnc6xr8pump", "birdeye": "https://birdeye.so/token/3V7kmhLtC5knMrxDhwb2BdxUj1Ucs7KKfrnc6xr8pump?chain=solana", "pumpfun": "https://pump.fun/coin/3V7kmhLtC5knMrxDhwb2BdxUj1Ucs7KKfrnc6xr8pump"}}, {"ts": "2026-11-02T18:08:47.740899+01:00", "symbol": "NVIDIAHOUSE", "mint": "QAShU7cDwtLgiUYn8fAfnotB95VY4qQ7gWyqhTupump", "liquidity_usd": 13602.5395, "price_change_1h_pct": -6.177, "top10_pct_ex_pool": 15.993, "links": {"dexscreener": "https://dexscreener.com/solana/QAShU7cDwtLgiUYn8fAfnotB95VY4qQ7gWyqhTupump", "solscan": "https://solscan.io/token/QAShU7cDwtLgiUYn8fAfnotB95VY4qQ7gWyqhTupump", "birdeye": "https://birdeye.so/token/QAShU7cDwtLgiUYn8fAfnotB95VY4qQ7gWyqhTupump?chain=solana", "pumpfun": "https://pump.fun/coin/QAShU7cDwtLgiUYn8fAfnotB95VY4qQ7gWyqhTupump"}}, {"ts": "2026-11-02T18:04:10.198317+01:00", "symbol": "TEXR", "mint": "4CMj4SHa2E75WVhVs562nJJeAPfUqEUq6o6wDQMjpump", "liquidity_usd": 17543.9611, "price_change_1h_pct": 33.066, "top10_pct_ex_pool": 23.3751, "links": {"dexscreener": "https://dexscreener.com/solana/4CMj4SHa2E75WVhVs562nJJeAPfUqEUq6o6wDQMjpump", "solscan": "https://solscan.io/token/4CMj4SHa2E75WVhVs562nJJeAPfUqEUq6o6wDQMjpump", "birdeye": "https://birdeye.so/token/4CMj4SHa2E75WVhVs562nJJeAPfUqEUq6o6wDQMjpump?chain=solana", "pumpfun": "https://pump.fun/coin/4CMj4SHa2E75WVhVs562nJJeAPfUqEUq6o6wDQMjpump"}}], "open_positions": [], "closed_positions": [], "exits": [], "pnl_curve": [], "decisions": [{"ts": "2026-11-02T18:58:34.674666+01:00", "stage": "Scanner", "symbol": "眉眉", "mint": "7D5hHnjrgaFKRZUwFDWfawaUduNdsy3GzL7CjTh5WxA4", "decision": "KILL", "reason": "copycat_non_pump_mint", "links": {"dexscreener": "https://dexscreener.com/solana/7D5hHnjrgaFKRZUwFDWfawaUduNdsy3GzL7CjTh5WxA4", "solscan": "https://solscan.io/token/7D5hHnjrgaFKRZUwFDWfawaUduNdsy3GzL7CjTh5WxA4", "birdeye": "https://birdeye.so/token/7D5hHnjrgaFKRZUwFDWfawaUduNdsy3GzL7CjTh5WxA4?chain=solana", "pumpfun": "https://pump.fun/coin/7D5hHnjrgaFKRZUwFDWfawaUduNdsy3GzL7CjTh5WxA4"}}, {"ts": "2026-11-02T18:58:32.214527+01:00", "stage": "Scanner", "symbol": "MALFOID", "mint": "6h9yrya6uTdSXyKqQbAohLPtUsKpVzP8gHzovVWMe4yL", "decision": "KILL", "reason": "copycat_non_pump_mint", "links": {"dexscreener": "https://dexscreener.com/solana/6h9yrya6uTdSXyKqQbAohLPtUsKpVzP8gHzovVWMe4yL", "solscan": "https://solscan.io/token/6h9yrya6uTdSXyKqQbAohLPtUsKpVzP8gHzovVWMe4yL", "birdeye": "https://birdeye.so/token/6h9yrya6uTdSXyKqQbAohLPtUsKpVzP8gHzovVWMe4yL?chain=solana", "pumpfun": "https://pump.fun/coin/6h9yrya6uTdSXyKqQbAohLPtUsKpVzP8gHzovVWMe4yL"}}, {"ts": "2026-11-02T18:58:32.211907+01:00", "stage": "Scanner", "symbol": "POLYCRISIS", "mint": "FGtXWrjycT9TJe6TUBHfXTMnpctH3JF2vWfhRdvb8jnq", "decision": "KILL", "reason": "copycat_non_pump_mint", "links": {"dexscreener": "https://dexscreener.com/solana/FGtXWrjycT9TJe6TUBHfXTMnpctH3JF2vWfhRdvb8jnq", "solscan": "https://solscan.io/token/FGtXWrjycT9TJe6TUBHfXTMnpctH3JF2vWfhRdvb8jnq", "birdeye": "https://birdeye.so/token/FGtXWrjycT9TJe6TUBHfXTMnpctH3JF2vWfhRdvb8jnq?chain=solana", "pumpfun": "https://pump.fun/coin/FGtXWrjycT9TJe6TUBHfXTMnpctH3JF2vWfhRdvb8jnq"}}, {"ts": "2026-11-02T18:57:57.019015+01:00", "stage": "Scanner", "symbol": "NULL", "mint": "6z1oDp7S7CewcoS8ZiXcwLLE99kJuSrb26bkG494jqHz", "decision": "KILL", "reason": "copycat_non_pump_mint", "links": {"dexscreener": "https://dexscreener.com/solana/6z1oDp7S7CewcoS8ZiXcwLLE99kJuSrb26bkG494jqHz", "solscan": "https://solscan.io/token/6z1oDp7S7CewcoS8ZiXcwLLE99kJuSrb26bkG494jqHz", "birdeye": "https://birdeye.so/token/6z1oDp7S7CewcoS8ZiXcwLLE99kJuSrb26bkG494jqHz?chain=solana", "pumpfun": "https://pump.fun/coin/6z1oDp7S7CewcoS8ZiXcwLLE99kJuSrb26bkG494jqHz"}}, {"ts": "2026-11-02T18:57:56.979010+01:00", "stage": "Scanner", "symbol": "Polycrisis", "mint": "92CXwpV1reb2qfnStrShoFYkRd8o9tyVgbQg4U6Yx7JE", "decision": "KILL", "reason": "copycat_non_pump_mint", "links": {"dexscreener": "https://dexscreener.com/solana/92CXwpV1reb2qfnStrShoFYkRd8o9tyVgbQg4U6Yx7JE", "solscan": "https://solscan.io/token/92CXwpV1reb2qfnStrShoFYkRd8o9tyVgbQg4U6Yx7JE", "birdeye": "https://birdeye.so/token/92CXwpV1reb2qfnStrShoFYkRd8o9tyVgbQg4U6Yx7JE?chain=solana", "pumpfun": "https://pump.fun/coin/92CXwpV1reb2qfnStrShoFYkRd8o9tyVgbQg4U6Yx7JE"}}, {"ts": "2026-11-02T18:57:52+01:00", "stage": "Auditor", "symbol": "PIRATE", "mint": "6mXFCoZ515w37YfmwXGJMPfQfiK5tr9WkihW3oN9pump", "decision": "INCOMPLETE", "reason": "", "links": {"dexscreener": "https://dexscreener.com/solana/6mXFCoZ515w37YfmwXGJMPfQfiK5tr9WkihW3oN9pump", "solscan": "https://solscan.io/token/6mXFCoZ515w37YfmwXGJMPfQfiK5tr9WkihW3oN9pump", "birdeye": "https://birdeye.so/token/6mXFCoZ515w37YfmwXGJMPfQfiK5tr9WkihW3oN9pump?chain=solana", "pumpfun": "https://pump.fun/coin/6mXFCoZ515w37YfmwXGJMPfQfiK5tr9WkihW3oN9pump"}}, {"ts": "2026-11-02T18:57:29+01:00", "stage": "Auditor", "symbol": "NULL", "mint": "5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump", "decision": "INCOMPLETE", "reason": "", "links": {"dexscreener": "https://dexscreener.com/solana/5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump", "solscan": "https://solscan.io/token/5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump", "birdeye": "https://birdeye.so/token/5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump?chain=solana", "pumpfun": "https://pump.fun/coin/5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump"}}, {"ts": "2026-11-02T18:57:04+01:00", "stage": "Auditor", "symbol": "PAUL", "mint": "GnY6RSduqXgJ3nas2CKTDkNbrm2FXYExFxP7BXYEpump", "decision": "INCOMPLETE", "reason": "", "links": {"dexscreener": "https://dexscreener.com/solana/GnY6RSduqXgJ3nas2CKTDkNbrm2FXYExFxP7BXYEpump", "solscan": "https://solscan.io/token/GnY6RSduqXgJ3nas2CKTDkNbrm2FXYExFxP7BXYEpump", "birdeye": "https://birdeye.so/token/GnY6RSduqXgJ3nas2CKTDkNbrm2FXYExFxP7BXYEpump?chain=solana", "pumpfun": "https://pump.fun/coin/GnY6RSduqXgJ3nas2CKTDkNbrm2FXYExFxP7BXYEpump"}}, {"ts": "2026-11-02T18:56:34+01:00", "stage": "Auditor", "symbol": "NULL", "mint": "5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump", "decision": "INCOMPLETE", "reason": "", "links": {"dexscreener": "https://dexscreener.com/solana/5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump", "solscan": "https://solscan.io/token/5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump", "birdeye": "https://birdeye.so/token/5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump?chain=solana", "pumpfun": "https://pump.fun/coin/5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump"}}, {"ts": "2026-11-02T18:56:16+01:00", "stage": "Auditor", "symbol": "OI", "mint": "8pBZ8WgdqT3VoWPpDfBkdbLJyNJ1D8gKc2eSkkp2pump", "decision": "KILL", "reason": "", "links": {"dexscreener": "https://dexscreener.com/solana/8pBZ8WgdqT3VoWPpDfBkdbLJyNJ1D8gKc2eSkkp2pump", "solscan": "https://solscan.io/token/8pBZ8WgdqT3VoWPpDfBkdbLJyNJ1D8gKc2eSkkp2pump", "birdeye": "https://birdeye.so/token/8pBZ8WgdqT3VoWPpDfBkdbLJyNJ1D8gKc2eSkkp2pump?chain=solana", "pumpfun": "https://pump.fun/coin/8pBZ8WgdqT3VoWPpDfBkdbLJyNJ1D8gKc2eSkkp2pump"}}, {"ts": "2026-11-02T18:55:57.855693+01:00", "stage": "Scanner", "symbol": "MALFOID", "mint": "HH5NSwdYReeFUKNePWijabE8voCjuFcwZ1J8rLgX9Lfh", "decision": "KILL", "reason": "copycat_non_pump_mint", "links": {"dexscreener": "https://dexscreener.com/solana/HH5NSwdYReeFUKNePWijabE8voCjuFcwZ1J8rLgX9Lfh", "solscan": "https://solscan.io/token/HH5NSwdYReeFUKNePWijabE8voCjuFcwZ1J8rLgX9Lfh", "birdeye": "https://birdeye.so/token/HH5NSwdYReeFUKNePWijabE8voCjuFcwZ1J8rLgX9Lfh?chain=solana", "pumpfun": "https://pump.fun/coin/HH5NSwdYReeFUKNePWijabE8voCjuFcwZ1J8rLgX9Lfh"}}, {"ts": "2026-11-02T18:55:57+01:00", "stage": "Auditor", "symbol": "FRANK", "mint": "2pQ2MKMVtSRaC9KjeN3SoWF54Ee6aagnLs332R93pump", "decision": "KILL", "reason": "", "links": {"dexscreener": "https://dexscreener.com/solana/2pQ2MKMVtSRaC9KjeN3SoWF54Ee6aagnLs332R93pump", "solscan": "https://solscan.io/token/2pQ2MKMVtSRaC9KjeN3SoWF54Ee6aagnLs332R93pump", "birdeye": "https://birdeye.so/token/2pQ2MKMVtSRaC9KjeN3SoWF54Ee6aagnLs332R93pump?chain=solana", "pumpfun": "https://pump.fun/coin/2pQ2MKMVtSRaC9KjeN3SoWF54Ee6aagnLs332R93pump"}}, {"ts": "2026-11-02T18:55:42+01:00", "stage": "Auditor", "symbol": "XFIELD", "mint": "CMGSEp7VpQCpcNY8ErwzQzwputAFt6UCdaG8jgCPpump", "decision": "KILL", "reason": "", "links": {"dexscreener": "https://dexscreener.com/solana/CMGSEp7VpQCpcNY8ErwzQzwputAFt6UCdaG8jgCPpump", "solscan": "https://solscan.io/token/CMGSEp7VpQCpcNY8ErwzQzwputAFt6UCdaG8jgCPpump", "birdeye": "https://birdeye.so/token/CMGSEp7VpQCpcNY8ErwzQzwputAFt6UCdaG8jgCPpump?chain=solana", "pumpfun": "https://pump.fun/coin/CMGSEp7VpQCpcNY8ErwzQzwputAFt6UCdaG8jgCPpump"}}, {"ts": "2026-11-02T18:55:24+01:00", "stage": "Auditor", "symbol": "Rocky", "mint": "DvEqhCLZgEYVr4JQ93BA33HQ4Kjh6a4znTUFViXjpump", "decision": "KILL", "reason": "", "links": {"dexscreener": "https://dexscreener.com/solana/DvEqhCLZgEYVr4JQ93BA33HQ4Kjh6a4znTUFViXjpump", "solscan": "https://solscan.io/token/DvEqhCLZgEYVr4JQ93BA33HQ4Kjh6a4znTUFViXjpump", "birdeye": "https://birdeye.so/token/DvEqhCLZgEYVr4JQ93BA33HQ4Kjh6a4znTUFViXjpump?chain=solana", "pumpfun": "https://pump.fun/coin/DvEqhCLZgEYVr4JQ93BA33HQ4Kjh6a4znTUFViXjpump"}}, {"ts": "2026-11-02T18:55:02+01:00", "stage": "Auditor", "symbol": "PIRATE", "mint": "6mXFCoZ515w37YfmwXGJMPfQfiK5tr9WkihW3oN9pump", "decision": "INCOMPLETE", "reason": "", "links": {"dexscreener": "https://dexscreener.com/solana/6mXFCoZ515w37YfmwXGJMPfQfiK5tr9WkihW3oN9pump", "solscan": "https://solscan.io/token/6mXFCoZ515w37YfmwXGJMPfQfiK5tr9WkihW3oN9pump", "birdeye": "https://birdeye.so/token/6mXFCoZ515w37YfmwXGJMPfQfiK5tr9WkihW3oN9pump?chain=solana", "pumpfun": "https://pump.fun/coin/6mXFCoZ515w37YfmwXGJMPfQfiK5tr9WkihW3oN9pump"}}, {"ts": "2026-11-02T18:54:56.150650+01:00", "stage": "Scanner", "symbol": "SAFU", "mint": "6zaH2mwqnJheJzfsgxDGax7LT2pwpRrguFBaQ7EcDg6B", "decision": "KILL", "reason": "copycat_non_pump_mint", "links": {"dexscreener": "https://dexscreener.com/solana/6zaH2mwqnJheJzfsgxDGax7LT2pwpRrguFBaQ7EcDg6B", "solscan": "https://solscan.io/token/6zaH2mwqnJheJzfsgxDGax7LT2pwpRrguFBaQ7EcDg6B", "birdeye": "https://birdeye.so/token/6zaH2mwqnJheJzfsgxDGax7LT2pwpRrguFBaQ7EcDg6B?chain=solana", "pumpfun": "https://pump.fun/coin/6zaH2mwqnJheJzfsgxDGax7LT2pwpRrguFBaQ7EcDg6B"}}, {"ts": "2026-11-02T18:54:56.148298+01:00", "stage": "Scanner", "symbol": "CATO", "mint": "AGHjopXsGrGPptWH1AJVJBVjY6dWMtQwkWgVNvhCxXiN", "decision": "KILL", "reason": "copycat_non_pump_mint", "links": {"dexscreener": "https://dexscreener.com/solana/AGHjopXsGrGPptWH1AJVJBVjY6dWMtQwkWgVNvhCxXiN", "solscan": "https://solscan.io/token/AGHjopXsGrGPptWH1AJVJBVjY6dWMtQwkWgVNvhCxXiN", "birdeye": "https://birdeye.so/token/AGHjopXsGrGPptWH1AJVJBVjY6dWMtQwkWgVNvhCxXiN?chain=solana", "pumpfun": "https://pump.fun/coin/AGHjopXsGrGPptWH1AJVJBVjY6dWMtQwkWgVNvhCxXiN"}}, {"ts": "2026-11-02T18:54:53.766025+01:00", "stage": "Scanner", "symbol": "$CCOW", "mint": "EqiwSgjcUV3dHufNtFAfQkWhVfHUXE5GYEMEgeLdpump", "decision": "KILL", "reason": "liquidity_below_floor:2.90\u003c5000", "links": {"dexscreener": "https://dexscreener.com/solana/EqiwSgjcUV3dHufNtFAfQkWhVfHUXE5GYEMEgeLdpump", "solscan": "https://solscan.io/token/EqiwSgjcUV3dHufNtFAfQkWhVfHUXE5GYEMEgeLdpump", "birdeye": "https://birdeye.so/token/EqiwSgjcUV3dHufNtFAfQkWhVfHUXE5GYEMEgeLdpump?chain=solana", "pumpfun": "https://pump.fun/coin/EqiwSgjcUV3dHufNtFAfQkWhVfHUXE5GYEMEgeLdpump"}}, {"ts": "2026-11-02T18:54:35+01:00", "stage": "Auditor", "symbol": "TEXR", "mint": "3V7kmhLtC5knMrxDhwb2BdxUj1Ucs7KKfrnc6xr8pump", "decision": "KILL", "reason": "", "links": {"dexscreener": "https://dexscreener.com/solana/3V7kmhLtC5knMrxDhwb2BdxUj1Ucs7KKfrnc6xr8pump", "solscan": "https://solscan.io/token/3V7kmhLtC5knMrxDhwb2BdxUj1Ucs7KKfrnc6xr8pump", "birdeye": "https://birdeye.so/token/3V7kmhLtC5knMrxDhwb2BdxUj1Ucs7KKfrnc6xr8pump?chain=solana", "pumpfun": "https://pump.fun/coin/3V7kmhLtC5knMrxDhwb2BdxUj1Ucs7KKfrnc6xr8pump"}}, {"ts": "2026-11-02T18:54:23+01:00", "stage": "Auditor", "symbol": "NVIDIAHOUSE", "mint": "QAShU7cDwtLgiUYn8fAfnotB95VY4qQ7gWyqhTupump", "decision": "KILL", "reason": "", "links": {"dexscreener": "https://dexscreener.com/solana/QAShU7cDwtLgiUYn8fAfnotB95VY4qQ7gWyqhTupump", "solscan": "https://solscan.io/token/QAShU7cDwtLgiUYn8fAfnotB95VY4qQ7gWyqhTupump", "birdeye": "https://birdeye.so/token/QAShU7cDwtLgiUYn8fAfnotB95VY4qQ7gWyqhTupump?chain=solana", "pumpfun": "https://pump.fun/coin/QAShU7cDwtLgiUYn8fAfnotB95VY4qQ7gWyqhTupump"}}, {"ts": "2026-11-02T18:54:07.457707+01:00", "stage": "Scanner", "symbol": "眉眉", "mint": "48zq3QRoAATs69dwKX1Y699gsEnb2QC3vwSogGh8twbZ", "decision": "KILL", "reason": "copycat_non_pump_mint", "links": {"dexscreener": "https://dexscreener.com/solana/48zq3QRoAATs69dwKX1Y699gsEnb2QC3vwSogGh8twbZ", "solscan": "https://solscan.io/token/48zq3QRoAATs69dwKX1Y699gsEnb2QC3vwSogGh8twbZ", "birdeye": "https://birdeye.so/token/48zq3QRoAATs69dwKX1Y699gsEnb2QC3vwSogGh8twbZ?chain=solana", "pumpfun": "https://pump.fun/coin/48zq3QRoAATs69dwKX1Y699gsEnb2QC3vwSogGh8twbZ"}}, {"ts": "2026-11-02T18:54:07.455086+01:00", "stage": "Scanner", "symbol": "Learjet 60", "mint": "8t5yQwu1TShQVyTgEtizw4SoJYTKx46rTs3zBYtZ6sHS", "decision": "KILL", "reason": "copycat_non_pump_mint", "links": {"dexscreener": "https://dexscreener.com/solana/8t5yQwu1TShQVyTgEtizw4SoJYTKx46rTs3zBYtZ6sHS", "solscan": "https://solscan.io/token/8t5yQwu1TShQVyTgEtizw4SoJYTKx46rTs3zBYtZ6sHS", "birdeye": "https://birdeye.so/token/8t5yQwu1TShQVyTgEtizw4SoJYTKx46rTs3zBYtZ6sHS?chain=solana", "pumpfun": "https://pump.fun/coin/8t5yQwu1TShQVyTgEtizw4SoJYTKx46rTs3zBYtZ6sHS"}}, {"ts": "2026-11-02T18:54:07.451426+01:00", "stage": "Scanner", "symbol": "CATO", "mint": "6kXmTTFhF6nqqTZ85zkCxw3UYgz8fbU8Jr48S8LNStiB", "decision": "KILL", "reason": "copycat_non_pump_mint", "links": {"dexscreener": "https://dexscreener.com/solana/6kXmTTFhF6nqqTZ85zkCxw3UYgz8fbU8Jr48S8LNStiB", "solscan": "https://solscan.io/token/6kXmTTFhF6nqqTZ85zkCxw3UYgz8fbU8Jr48S8LNStiB", "birdeye": "https://birdeye.so/token/6kXmTTFhF6nqqTZ85zkCxw3UYgz8fbU8Jr48S8LNStiB?chain=solana", "pumpfun": "https://pump.fun/coin/6kXmTTFhF6nqqTZ85zkCxw3UYgz8fbU8Jr48S8LNStiB"}}, {"ts": "2026-11-02T18:53:59.569427+01:00", "stage": "Scanner", "symbol": "Railsig", "mint": "CHomXFvC1WiKLvCokM2DgSyZ4R6DQ2ptCDKpQQnimoon", "decision": "KILL", "reason": "copycat_non_pump_mint", "links": {"dexscreener": "https://dexscreener.com/solana/CHomXFvC1WiKLvCokM2DgSyZ4R6DQ2ptCDKpQQnimoon", "solscan": "https://solscan.io/token/CHomXFvC1WiKLvCokM2DgSyZ4R6DQ2ptCDKpQQnimoon", "birdeye": "https://birdeye.so/token/CHomXFvC1WiKLvCokM2DgSyZ4R6DQ2ptCDKpQQnimoon?chain=solana", "pumpfun": "https://pump.fun/coin/CHomXFvC1WiKLvCokM2DgSyZ4R6DQ2ptCDKpQQnimoon"}}, {"ts": "2026-11-02T18:53:57.040432+01:00", "stage": "Scanner", "symbol": "NEX", "mint": "e7ntm2zJFJW6ej7eG4FAKdqySbdrqmeMUMXXf5vF9X3", "decision": "KILL", "reason": "copycat_non_pump_mint", "links": {"dexscreener": "https://dexscreener.com/solana/e7ntm2zJFJW6ej7eG4FAKdqySbdrqmeMUMXXf5vF9X3", "solscan": "https://solscan.io/token/e7ntm2zJFJW6ej7eG4FAKdqySbdrqmeMUMXXf5vF9X3", "birdeye": "https://birdeye.so/token/e7ntm2zJFJW6ej7eG4FAKdqySbdrqmeMUMXXf5vF9X3?chain=solana", "pumpfun": "https://pump.fun/coin/e7ntm2zJFJW6ej7eG4FAKdqySbdrqmeMUMXXf5vF9X3"}}], "link_coins": [{"symbol": "MALFOID", "mint": "C3v4Xs6ytkLdgpoxxgTnVxpKnfmij9mLwL1XCvRtpump", "links": {"dexscreener": "https://dexscreener.com/solana/C3v4Xs6ytkLdgpoxxgTnVxpKnfmij9mLwL1XCvRtpump", "solscan": "https://solscan.io/token/C3v4Xs6ytkLdgpoxxgTnVxpKnfmij9mLwL1XCvRtpump", "birdeye": "https://birdeye.so/token/C3v4Xs6ytkLdgpoxxgTnVxpKnfmij9mLwL1XCvRtpump?chain=solana", "pumpfun": "https://pump.fun/coin/C3v4Xs6ytkLdgpoxxgTnVxpKnfmij9mLwL1XCvRtpump"}}, {"symbol": "NULL", "mint": "5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump", "links": {"dexscreener": "https://dexscreener.com/solana/5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump", "solscan": "https://solscan.io/token/5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump", "birdeye": "https://birdeye.so/token/5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump?chain=solana", "pumpfun": "https://pump.fun/coin/5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump"}}, {"symbol": "OI", "mint": "8pBZ8WgdqT3VoWPpDfBkdbLJyNJ1D8gKc2eSkkp2pump", "links": {"dexscreener": "https://dexscreener.com/solana/8pBZ8WgdqT3VoWPpDfBkdbLJyNJ1D8gKc2eSkkp2pump", "solscan": "https://solscan.io/token/8pBZ8WgdqT3VoWPpDfBkdbLJyNJ1D8gKc2eSkkp2pump", "birdeye": "https://birdeye.so/token/8pBZ8WgdqT3VoWPpDfBkdbLJyNJ1D8gKc2eSkkp2pump?chain=solana", "pumpfun": "https://pump.fun/coin/8pBZ8WgdqT3VoWPpDfBkdbLJyNJ1D8gKc2eSkkp2pump"}}, {"symbol": "FOMO", "mint": "d1y9b9svg232oeH7C35D9ihLQ65CPpS7vn58NyEpump", "links": {"dexscreener": "https://dexscreener.com/solana/d1y9b9svg232oeH7C35D9ihLQ65CPpS7vn58NyEpump", "solscan": "https://solscan.io/token/d1y9b9svg232oeH7C35D9ihLQ65CPpS7vn58NyEpump", "birdeye": "https://birdeye.so/token/d1y9b9svg232oeH7C35D9ihLQ65CPpS7vn58NyEpump?chain=solana", "pumpfun": "https://pump.fun/coin/d1y9b9svg232oeH7C35D9ihLQ65CPpS7vn58NyEpump"}}, {"symbol": "FRANK", "mint": "2pQ2MKMVtSRaC9KjeN3SoWF54Ee6aagnLs332R93pump", "links": {"dexscreener": "https://dexscreener.com/solana/2pQ2MKMVtSRaC9KjeN3SoWF54Ee6aagnLs332R93pump", "solscan": "https://solscan.io/token/2pQ2MKMVtSRaC9KjeN3SoWF54Ee6aagnLs332R93pump", "birdeye": "https://birdeye.so/token/2pQ2MKMVtSRaC9KjeN3SoWF54Ee6aagnLs332R93pump?chain=solana", "pumpfun": "https://pump.fun/coin/2pQ2MKMVtSRaC9KjeN3SoWF54Ee6aagnLs332R93pump"}}, {"symbol": "XFIELD", "mint": "CMGSEp7VpQCpcNY8ErwzQzwputAFt6UCdaG8jgCPpump", "links": {"dexscreener": "https://dexscreener.com/solana/CMGSEp7VpQCpcNY8ErwzQzwputAFt6UCdaG8jgCPpump", "solscan": "https://solscan.io/token/CMGSEp7VpQCpcNY8ErwzQzwputAFt6UCdaG8jgCPpump", "birdeye": "https://birdeye.so/token/CMGSEp7VpQCpcNY8ErwzQzwputAFt6UCdaG8jgCPpump?chain=solana", "pumpfun": "https://pump.fun/coin/CMGSEp7VpQCpcNY8ErwzQzwputAFt6UCdaG8jgCPpump"}}, {"symbol": "Rocky", "mint": "DvEqhCLZgEYVr4JQ93BA33HQ4Kjh6a4znTUFViXjpump", "links": {"dexscreener": "https://dexscreener.com/solana/DvEqhCLZgEYVr4JQ93BA33HQ4Kjh6a4znTUFViXjpump", "solscan": "https://solscan.io/token/DvEqhCLZgEYVr4JQ93BA33HQ4Kjh6a4znTUFViXjpump", "birdeye": "https://birdeye.so/token/DvEqhCLZgEYVr4JQ93BA33HQ4Kjh6a4znTUFViXjpump?chain=solana", "pumpfun": "https://pump.fun/coin/DvEqhCLZgEYVr4JQ93BA33HQ4Kjh6a4znTUFViXjpump"}}, {"symbol": "BEAST", "mint": "DMYfR7w3fwNtUo5pmJjvHaR2EjkXmYjwPT4W8gBpump", "links": {"dexscreener": "https://dexscreener.com/solana/DMYfR7w3fwNtUo5pmJjvHaR2EjkXmYjwPT4W8gBpump", "solscan": "https://solscan.io/token/DMYfR7w3fwNtUo5pmJjvHaR2EjkXmYjwPT4W8gBpump", "birdeye": "https://birdeye.so/token/DMYfR7w3fwNtUo5pmJjvHaR2EjkXmYjwPT4W8gBpump?chain=solana", "pumpfun": "https://pump.fun/coin/DMYfR7w3fwNtUo5pmJjvHaR2EjkXmYjwPT4W8gBpump"}}, {"symbol": "PIRATE", "mint": "6mXFCoZ515w37YfmwXGJMPfQfiK5tr9WkihW3oN9pump", "links": {"dexscreener": "https://dexscreener.com/solana/6mXFCoZ515w37YfmwXGJMPfQfiK5tr9WkihW3oN9pump", "solscan": "https://solscan.io/token/6mXFCoZ515w37YfmwXGJMPfQfiK5tr9WkihW3oN9pump", "birdeye": "https://birdeye.so/token/6mXFCoZ515w37YfmwXGJMPfQfiK5tr9WkihW3oN9pump?chain=solana", "pumpfun": "https://pump.fun/coin/6mXFCoZ515w37YfmwXGJMPfQfiK5tr9WkihW3oN9pump"}}, {"symbol": "TEXR", "mint": "3V7kmhLtC5knMrxDhwb2BdxUj1Ucs7KKfrnc6xr8pump", "links": {"dexscreener": "https://dexscreener.com/solana/3V7kmhLtC5knMrxDhwb2BdxUj1Ucs7KKfrnc6xr8pump", "solscan": "https://solscan.io/token/3V7kmhLtC5knMrxDhwb2BdxUj1Ucs7KKfrnc6xr8pump", "birdeye": "https://birdeye.so/token/3V7kmhLtC5knMrxDhwb2BdxUj1Ucs7KKfrnc6xr8pump?chain=solana", "pumpfun": "https://pump.fun/coin/3V7kmhLtC5knMrxDhwb2BdxUj1Ucs7KKfrnc6xr8pump"}}, {"symbol": "NVIDIAHOUSE", "mint": "QAShU7cDwtLgiUYn8fAfnotB95VY4qQ7gWyqhTupump", "links": {"dexscreener": "https://dexscreener.com/solana/QAShU7cDwtLgiUYn8fAfnotB95VY4qQ7gWyqhTupump", "solscan": "https://solscan.io/token/QAShU7cDwtLgiUYn8fAfnotB95VY4qQ7gWyqhTupump", "birdeye": "https://birdeye.so/token/QAShU7cDwtLgiUYn8fAfnotB95VY4qQ7gWyqhTupump?chain=solana", "pumpfun": "https://pump.fun/coin/QAShU7cDwtLgiUYn8fAfnotB95VY4qQ7gWyqhTupump"}}, {"symbol": "TEXR", "mint": "4CMj4SHa2E75WVhVs562nJJeAPfUqEUq6o6wDQMjpump", "links": {"dexscreener": "https://dexscreener.com/solana/4CMj4SHa2E75WVhVs562nJJeAPfUqEUq6o6wDQMjpump", "solscan": "https://solscan.io/token/4CMj4SHa2E75WVhVs562nJJeAPfUqEUq6o6wDQMjpump", "birdeye": "https://birdeye.so/token/4CMj4SHa2E75WVhVs562nJJeAPfUqEUq6o6wDQMjpump?chain=solana", "pumpfun": "https://pump.fun/coin/4CMj4SHa2E75WVhVs562nJJeAPfUqEUq6o6wDQMjpump"}}], "settings": {"scanner": {"label": "Scanner", "mention": "@Scanner", "fields": [{"key": "wait_sec", "label": "Waiting room (secondi)", "type": "number", "value": 60, "min": 60, "max": 600, "step": 10, "unit": "s", "source": "desk/scanner.py WAIT_MIN_AGE_SEC"}, {"key": "liq_floor", "label": "Liquidity floor (USD)", "type": "number", "value": 5000.0, "min": 3000, "max": 100000, "step": 500, "unit": "USD", "source": "desk/scanner.py LIQ_FLOOR_USD"}, {"key": "top10_pct", "label": "Top10 threshold (%)", "type": "number", "value": 35.0, "min": 10, "max": 45, "step": 1, "unit": "%", "source": "desk/scanner.py TOP10_MAX_PCT"}, {"key": "copycat", "label": "Copycat strictness", "type": "select", "value": "10x+$100k", "options": [{"value": "5x+$100k", "label": "5× e ≥ $100k (attuale)"}, {"value": "3x+$50k", "label": "3× e ≥ $50k (più stretto)"}, {"value": "soft_notes_only", "label": "Solo note (niente kill peer)"}], "source": "scanner.py COPYCAT_BIGGER_MULT=10.0 COPYCAT_BIGGER_MIN_LIQ=100000.0"}]}, "auditor": {"label": "Auditor", "mention": "@Auditor", "fields": [{"key": "liq_min", "label": "Liquidity min (USD)", "type": "number", "value": 5000, "min": 3000, "max": 100000, "step": 500, "unit": "USD", "source": "desk/auditor_thresholds.json liquidity_min_usd"}, {"key": "dev_pct", "label": "Dev holding max (%)", "type": "number", "value": 8, "min": 0, "max": 30, "step": 1, "unit": "%", "source": "desk/auditor_thresholds.json dev_holding_pct_max"}, {"key": "top10_pct", "label": "Top10 max (%)", "type": "number", "value": 35, "min": 10, "max": 50, "step": 1, "unit": "%", "source": "desk/auditor_thresholds.json top10_ex_pool_pct_max"}, {"key": "bundle_pct", "label": "Bundle / bundlers max (%)", "type": "number", "value": 15, "min": 0, "max": 50, "step": 1, "unit": "%", "source": "desk/auditor_thresholds.json bundled_wallets_pct_max"}]}, "analyst": {"label": "Analyst", "mention": "@Analyst", "fields": [{"key": "score_min", "label": "Score minimo", "type": "number", "value": null, "min": 0, "max": 100, "step": 5, "unit": "", "source": "nessun file con costante score_min (solo score nei log PASS/REJECT)"}, {"key": "chase_m5", "label": "Chase threshold m5 (%)", "type": "number", "value": 25.0, "min": 5, "max": 80, "step": 1, "unit": "%", "source": "analyst_log.jsonl (inferito dai fail «chase m5 … \u003e +X%»)"}, {"key": "chase_h1", "label": "Chase threshold h1 (%)", "type": "number", "value": 60.0, "min": 10, "max": 200, "step": 5, "unit": "%", "source": "analyst_log.jsonl (inferito dai fail «chase h1 … \u003e +X%»)"}]}, "risk": {"label": "MemecoinRisk", "mention": "@MemecoinRisk", "fields": [{"key": "stop_pct", "label": "Stop loss (%)", "type": "number", "value": 4.0, "min": 1, "max": 20, "step": 0.5, "unit": "%", "source": "risk/watcher.py INITIAL_STOP_FRAC=0.96 (+ ultimo watcher_start)"}, {"key": "tp_pct", "label": "Take profit (%)", "type": "number", "value": 8.0, "min": 1, "max": 50, "step": 0.5, "unit": "%", "source": "risk/watcher.py TAKE_PROFIT_FRAC=1.08"}, {"key": "trail_pct", "label": "Trailing (%) sotto peak", "type": "number", "value": 10.0, "min": 1, "max": 30, "step": 1, "unit": "%", "source": "risk/watcher.py TRAIL_BELOW_PEAK=0.9 TRAILING_ENABLED=False"}, {"key": "poll_sec", "label": "Polling (secondi)", "type": "number", "value": 5, "min": 3, "max": 60, "step": 1, "unit": "s", "source": "risk/log.jsonl watcher_start.poll_interval_sec / watcher.py POLL_INTERVAL_SEC"}]}, "executor": {"label": "Executor", "mention": "@Executor", "fields": [{"key": "stack_usd", "label": "Stack size (USD)", "type": "number", "value": 200, "min": 50, "max": 5000, "step": 10, "unit": "USD", "source": "paper/state.json start_stack_usd"}, {"key": "ticket_pct", "label": "Sizing (% stack)", "type": "number", "value": 8.0, "min": 1, "max": 25, "step": 0.5, "unit": "%", "source": "tickets_session1_2026-11-02.csv raw_8pct/stack_usd"}, {"key": "fomo_min", "label": "Min ticket (USD)", "type": "number", "value": 47.5, "min": 10, "max": 500, "step": 2.5, "unit": "USD", "source": "tickets_session1_2026-11-02.csv ticket_usd + nota FOMO"}, {"key": "pool_cap_pct", "label": "Cap liquidità pool (%)", "type": "number", "value": 2.0, "min": 0.5, "max": 10, "step": 0.5, "unit": "%", "source": "regola Executor: cap 2% liquidità pool (tickets liq_cap_2pct)"}]}}, "gaps": ["Nessuna posizione PAPER aperta nella sessione corrente.", "Sessione corrente senza trade chiusi ancora.", "Analyst score_min sconosciuto (nessuna costante su disco).", "Auditor e Analyst non hanno processo residente (on-demand); status da mtime log.", "Discrepanza sessione 1 vs state.json: realized_pnl_usd: file=-136.93 state.json=-136.94; end_stack_usd: file=63.07 state.json=63.06"], "procs": {"scanner": true, "watcher": true, "watchdog": true}};
+
+function $(id) { return document.getElementById(id); }
+function esc(s) {
+  return String(s == null ? "" : s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+function money(n, signed) {
+  if (n === null || n === undefined || isNaN(n)) return "—";
+  var s = (Math.round(n * 100) / 100).toFixed(2);
+  if (signed) return (n > 0 ? "+" : "") + "$" + s;
+  return "$" + s;
+}
+function pct(n, signed) {
+  if (n === null || n === undefined || isNaN(n)) return "—";
+  var s = (Math.round(n * 100) / 100).toFixed(1);
+  return (signed && n > 0 ? "+" : "") + s + "%";
+}
+function clsPnL(n) { return n > 0 ? "pos" : (n < 0 ? "neg" : ""); }
+function toast(msg) {
+  var t = $("toast"); t.textContent = msg; t.classList.add("show");
+  setTimeout(function(){ t.classList.remove("show"); }, 1600);
+}
+function copyText(text) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function(){ toast("Copiato"); }).catch(function(){ fallbackCopy(text); });
+    return;
+  }
+  fallbackCopy(text);
+}
+function fallbackCopy(text) {
+  var ta = document.createElement("textarea");
+  ta.value = text; document.body.appendChild(ta); ta.select();
+  try { document.execCommand("copy"); toast("Copiato"); } catch (e) { toast("Copia manuale"); }
+  document.body.removeChild(ta);
+}
+function linkRow(links) {
+  if (!links) return "";
+  return '<div class="links">' +
+    '<a href="' + links.dexscreener + '" target="_blank" rel="noopener">Dex</a>' +
+    '<a href="' + links.solscan + '" target="_blank" rel="noopener">Solscan</a>' +
+    '<a href="' + links.birdeye + '" target="_blank" rel="noopener">Birdeye</a>' +
+    '<a href="' + links.pumpfun + '" target="_blank" rel="noopener">Pump</a></div>';
+}
+function px(n) {
+  if (n === null || n === undefined) return "—";
+  var x = Number(n);
+  if (!isFinite(x)) return "—";
+  if (x === 0) return "0";
+  if (x < 0.0001) return x.toExponential(2);
+  return String(x);
+}
+
+function renderHero() {
+  var s = DATA.summary || {};
+  $("asof").textContent = "aggiornato alle " + (DATA.as_of_hm || "") + " (Rome)";
+  var pnlCls = clsPnL(s.total_pnl_usd);
+  var prog = s.progress_to_stack_pct;
+  var progLabel = (prog == null) ? "—" : (prog + "% verso stack $" + s.target_stack_usd);
+  var barW = (prog == null) ? 0 : Math.max(0, Math.min(100, prog));
+  var sess = DATA.session || {};
+  var sessLbl = sess.label || (s.session ? ("Sessione " + s.session) : "Sessione corrente");
+  $("sec-hero").innerHTML =
+    '<div class="lbl">Equity PAPER · ' + esc(sessLbl) + '</div>' +
+    '<div class="equity">' + money(s.equity_usd, false) + '</div>' +
+    '<div class="stack">Stack iniziale ' + money(s.stack_initial_usd, false) +
+      (sess.started_at ? (' · dal ' + esc(String(sess.started_at).replace("T"," ").slice(0,16))) : '') + '</div>' +
+    '<div class="pnl ' + pnlCls + '">' + money(s.total_pnl_usd, true) +
+      ' · ' + pct(s.total_pnl_pct_stack, true) + '</div>' +
+    '<div class="progress"><div class="meta"><span>Obiettivo: tornare a $' + esc(s.target_stack_usd) + '</span><span>' +
+      esc(progLabel) + '</span></div><div class="bar"><span style="width:' + barW + '%"></span></div></div>';
+}
+
+function renderStats() {
+  var s = DATA.summary || {};
+  $("stats").innerHTML =
+    '<div class="stat"><div class="lbl">Win rate</div><div class="val">' + (s.win_rate_pct != null ? s.win_rate_pct + "%" : "—") + '</div></div>' +
+    '<div class="stat"><div class="lbl">Trade</div><div class="val">' + (s.n_trades != null ? s.n_trades : "—") + '</div></div>' +
+    '<div class="stat"><div class="lbl">Avg win</div><div class="val pos">' + money(s.avg_win_usd, true) + '</div></div>' +
+    '<div class="stat"><div class="lbl">Avg loss</div><div class="val neg">' + money(s.avg_loss_usd, true) + '</div></div>' +
+    '<div class="stat"><div class="lbl">Realizzato</div><div class="val ' + clsPnL(s.realized_pnl_usd) + '">' + money(s.realized_pnl_usd, true) + '</div></div>' +
+    '<div class="stat"><div class="lbl">Non real.</div><div class="val ' + clsPnL(s.unrealized_pnl_usd) + '">' + money(s.unrealized_pnl_usd, true) + '</div></div>';
+}
+
+function renderChart() {
+  var curve = DATA.pnl_curve || [];
+  var exits = DATA.exits || [];
+  if (!curve.length && !exits.length) {
+    $("chart").innerHTML = '<p class="empty">Nessun trade chiuso ancora.</p>';
+    return;
+  }
+  var w = 360, h = 140, pad = 12;
+  var vals = curve.length ? curve.map(function(c){ return c.cum_usd; }) : [0];
+  // prepend 0 at start for equity feel
+  if (curve.length) vals = [0].concat(vals);
+  var lo = Math.min.apply(null, vals.concat([0]));
+  var hi = Math.max.apply(null, vals.concat([0]));
+  if (lo === hi) { hi = lo + 1; }
+  function x(i) { return pad + (i / Math.max(vals.length - 1, 1)) * (w - 2 * pad); }
+  function y(v) { return pad + (1 - (v - lo) / (hi - lo)) * (h - 2 * pad); }
+  var d = "";
+  for (var i = 0; i < vals.length; i++) {
+    d += (i ? "L" : "M") + x(i).toFixed(1) + "," + y(vals[i]).toFixed(1);
+  }
+  var last = vals[vals.length - 1];
+  var color = last >= 0 ? "#0f9d6e" : "#d64545";
+  var markers = "";
+  // green/red markers for closed trades along the curve (skip leading 0)
+  for (var j = 0; j < exits.length; j++) {
+    var idx = j + 1;
+    if (idx >= vals.length) idx = vals.length - 1;
+    var e = exits[j];
+    var pnl = Number(e.pnl_usd || 0);
+    var mc = pnl >= 0 ? "#0f9d6e" : "#d64545";
+    markers += '<circle cx="' + x(idx).toFixed(1) + '" cy="' + y(vals[idx]).toFixed(1) +
+      '" r="4.5" fill="' + mc + '" stroke="#fff" stroke-width="1.5"/>';
+  }
+  var html = '<svg class="chart" viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="none" role="img" aria-label="PNL cumulato">' +
+    '<line x1="' + pad + '" x2="' + (w - pad) + '" y1="' + y(0) + '" y2="' + y(0) + '" stroke="#d9e0ea" stroke-dasharray="4 4"/>' +
+    '<path d="' + d + '" fill="none" stroke="' + color + '" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round"/>' +
+    markers + '</svg>';
+  html += '<div class="mono">PNL cumulato ' + money(last, true) + ' · marker verdi/rossi = trade chiusi</div>';
+  $("chart").innerHTML = html;
+}
+
+function renderOpen() {
+  var open = DATA.open_positions || [];
+  if (!open.length) {
+    $("open").innerHTML = '<p class="empty">Nessuna posizione PAPER aperta.</p>';
+    return;
+  }
+  var html = "";
+  for (var i = 0; i < open.length; i++) {
+    var p = open[i];
+    var uCls = clsPnL(p.pnl_usd);
+    html += '<div class="trade-card"><div class="top"><div><div class="sym">' + esc(p.symbol) + '</div>' +
+      '<div class="mono">size ' + money(p.size_usd, false) + '</div></div>' +
+      '<div class="pnlbig ' + uCls + '">' + pct(p.pnl_pct, true) + '</div></div>' +
+      '<div class="kv">' +
+      '<div><div class="k">Entry</div><div class="v">' + px(p.entry_price_usd) + '</div></div>' +
+      '<div><div class="k">Last</div><div class="v">' + px(p.last_price_usd) + '</div></div>' +
+      '<div><div class="k">TP</div><div class="v">' + px(p.take_profit_price_usd) + '</div></div>' +
+      '<div><div class="k">Stop</div><div class="v">' + px(p.stop_price_usd) + '</div></div></div>' +
+      '<div class="unreal ' + uCls + '">Unrealised ' + money(p.pnl_usd, true) + '</div>' +
+      linkRow(p.links) + '</div>';
+  }
+  $("open").innerHTML = html;
+}
+
+function renderCloses() {
+  var exits = (DATA.exits || []).slice().reverse();
+  if (!exits.length) {
+    $("closes").innerHTML = '<p class="empty">Nessun trade chiuso.</p>';
+    return;
+  }
+  var html = "";
+  for (var i = 0; i < exits.length; i++) {
+    var e = exits[i];
+    var c = clsPnL(e.pnl_usd);
+    html += '<div class="trade-card"><div class="top"><div><div class="sym">' + esc(e.symbol) + '</div>' +
+      '<div class="mono">' + esc((e.ts || "").replace("T", " ").slice(0, 19)) + ' · ' + esc(e.exit_reason || "") + '</div></div>' +
+      '<div class="pnlbig ' + c + '">' + money(e.pnl_usd, true) + '</div></div>' +
+      '<div class="kv"><div><div class="k">PNL %</div><div class="v ' + c + '">' + pct(e.pnl_pct, true) + '</div></div>' +
+      '<div><div class="k">Size</div><div class="v">' + money(e.size_usd, false) + '</div></div>' +
+      '<div><div class="k">Entry</div><div class="v">' + px(e.entry_price_usd) + '</div></div>' +
+      '<div><div class="k">Exit</div><div class="v">' + px(e.exit_price_usd) + '</div></div></div>' +
+      linkRow(e.links) + '</div>';
+  }
+  $("closes").innerHTML = html;
+}
+
+function renderPastSessions() {
+  var past = DATA.past_sessions || [];
+  var el = $("past");
+  if (!el) return;
+  if (!past.length) {
+    el.innerHTML = '<p class="empty">Nessuna sessione precedente.</p>';
+    return;
+  }
+  var html = "";
+  for (var i = 0; i < past.length; i++) {
+    var s = past[i];
+    var pnlCls = clsPnL(s.realized_pnl_usd);
+    html += '<div class="trade-card">';
+    html += '<div class="top"><div><div class="sym">' + esc(s.label || ("Sessione " + s.session)) + '</div>';
+    html += '<div class="mono">' + esc((s.started_at || "").replace("T"," ").slice(0,16)) +
+      ' → ' + esc((s.ended_at || "").replace("T"," ").slice(0,16)) + '</div></div>';
+    html += '<div class="pnlbig ' + pnlCls + '">' + money(s.realized_pnl_usd, true) + '</div></div>';
+    html += '<div class="kv">';
+    html += '<div><div class="k">Stack</div><div class="v">' + money(s.start_stack_usd, false) + ' → ' + money(s.end_stack_usd, false) + '</div></div>';
+    html += '<div><div class="k">Trade</div><div class="v">' + esc(s.trades) + ' · ' + esc(s.wins) + 'W/' + esc(s.losses) + 'L';
+    if (s.win_rate_pct != null) html += ' · ' + s.win_rate_pct + '%';
+    html += '</div></div></div>';
+    var trades = s.trade_list || [];
+    if (trades.length) {
+      html += '<div style="margin-top:10px">';
+      for (var j = 0; j < trades.length; j++) {
+        var tr = trades[j];
+        var c = clsPnL(tr.pnl_usd);
+        html += '<div class="row" style="padding:8px 0"><div style="display:flex;justify-content:space-between;gap:8px">';
+        html += '<div style="font-weight:700">' + esc(tr.symbol) +
+          '<div class="mono">' + esc((tr.ts || "").replace("T"," ").slice(0,19)) +
+          (tr.exit_reason ? (' · ' + esc(tr.exit_reason)) : '') + '</div></div>';
+        html += '<div class="' + c + '" style="font-weight:800">' + money(tr.pnl_usd, true) +
+          '<div class="mono">' + pct(tr.pnl_pct, true) + '</div></div></div></div>';
+      }
+      html += '</div>';
+    }
+    html += '</div>';
+  }
+  el.innerHTML = html;
+}
+
+function renderWaiting() {
+  var w = DATA.waiting_room || [];
+  var recent = DATA.recent_scanner_passes || [];
+  var html = "";
+  if (!w.length) {
+    html += '<p class="empty">Nessun candidato in coda (Scanner waiting = ' +
+      esc((DATA.summary || {}).scanner_waiting) + ').</p>';
+  } else {
+    for (var i = 0; i < w.length; i++) {
+      var r = w[i];
+      html += '<div class="row"><div class="sym" style="font-weight:800">' + esc(r.symbol) + '</div>' +
+        '<div class="reason">' + esc(r.stage) + '</div>' +
+        '<div class="mono">liq ' + (r.liquidity_usd != null ? "$" + Math.round(r.liquidity_usd) : "—") + '</div>' +
+        linkRow(r.links) + '</div>';
+    }
+  }
+  if (recent.length) {
+    html += '<h3 style="margin-top:14px">Pass recenti Scanner</h3>';
+    for (var j = 0; j < Math.min(recent.length, 8); j++) {
+      var p = recent[j];
+      html += '<div class="row"><div style="font-weight:700">' + esc(p.symbol) +
+        ' <span class="' + clsPnL(p.price_change_1h_pct) + '">' + pct(p.price_change_1h_pct, true) + '</span></div>' +
+        '<div class="mono">liq ' + (p.liquidity_usd != null ? "$" + Math.round(p.liquidity_usd) : "—") +
+        ' · ' + esc((p.ts || "").slice(11, 19)) + '</div>' + linkRow(p.links) + '</div>';
+    }
+  }
+  $("waiting").innerHTML = html;
+}
+
+var decFilter = "Tutti";
+function renderDecisions() {
+  var stages = ["Tutti", "Scanner", "Auditor", "Analyst"];
+  var fh = "";
+  for (var i = 0; i < stages.length; i++) {
+    var s = stages[i];
+    fh += '<button type="button" class="' + (s === decFilter ? "on" : "") + '" data-s="' + s + '">' + s + '</button>';
+  }
+  $("dec-filter").innerHTML = fh;
+  $("dec-filter").onclick = function(e) {
+    var b = e.target.closest ? e.target.closest("button") : null;
+    if (!b) return;
+    decFilter = b.getAttribute("data-s");
+    renderDecisions();
+  };
+  var rows = DATA.decisions || [];
+  if (decFilter !== "Tutti") {
+    rows = rows.filter(function(r){ return r.stage === decFilter; });
+  }
+  if (!rows.length) { $("decisions").innerHTML = '<p class="empty">Nessuna decisione.</p>'; return; }
+  var html = "";
+  for (var k = 0; k < rows.length; k++) {
+    var r = rows[k];
+    var d = String(r.decision || "").toUpperCase();
+    html += '<div class="row"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center">' +
+      '<div style="font-weight:800">' + esc(r.symbol) + '</div><span class="pill ' + esc(d) + '">' + esc(d) + '</span></div>' +
+      '<div class="mono">' + esc(r.stage) + ' · ' + esc((r.ts || "").slice(11, 19)) + '</div>' +
+      '<div class="reason">' + esc(r.reason) + '</div>' + linkRow(r.links) + '</div>';
+  }
+  $("decisions").innerHTML = html;
+}
+
+function renderAgents() {
+  var agents = DATA.agents || [];
+  var html = "";
+  for (var i = 0; i < agents.length; i++) {
+    var a = agents[i];
+    var proc = a.process_running === true ? " · proc ON" : (a.process_running === false ? " · proc OFF" : "");
+    html += '<div class="row"><div style="display:flex;justify-content:space-between;align-items:center">' +
+      '<div style="font-weight:800">' + esc(a.name) + '</div>' +
+      '<span class="pill ' + esc(a.status) + '">' + (a.status === "active" ? "attivo" : "stale") + '</span></div>' +
+      '<div class="mono">' + esc(a.last_activity || "") + proc + '</div>' +
+      '<div class="note">' + esc(a.detail || "") + '</div></div>';
+  }
+  $("agents").innerHTML = html;
+}
+
+function renderLinks() {
+  var coins = DATA.link_coins || [];
+  if (!coins.length) { $("links").innerHTML = '<p class="empty">Nessun mint recente.</p>'; return; }
+  var html = "";
+  for (var i = 0; i < coins.length; i++) {
+    var c = coins[i];
+    html += '<div class="row"><div style="font-weight:800">' + esc(c.symbol) + '</div>' +
+      '<div class="mono">' + esc(c.mint) + '</div>' + linkRow(c.links) + '</div>';
+  }
+  $("links").innerHTML = html;
+}
+
+/* Settings */
+var baselines = {};
+function initBaselines() {
+  var S = DATA.settings || {};
+  for (var aid in S) {
+    if (!S.hasOwnProperty(aid)) continue;
+    baselines[aid] = {};
+    var fields = S[aid].fields || [];
+    for (var i = 0; i < fields.length; i++) baselines[aid][fields[i].key] = fields[i].value;
+  }
+}
+function currentVal(aid, key) {
+  var el = document.querySelector('[data-agent="' + aid + '"][data-key="' + key + '"][data-role="input"]');
+  if (!el) return baselines[aid] ? baselines[aid][key] : null;
+  if (el.tagName === "SELECT") return el.value === "" ? null : el.value;
+  if (el.value === "") return null;
+  var n = Number(el.value);
+  return isFinite(n) ? n : el.value;
+}
+function fmtVal(v) {
+  if (v === null || v === undefined || v === "") return "sconosciuto";
+  return String(v);
+}
+function buildAgentMessage(aid) {
+  var agent = DATA.settings[aid];
+  var changes = [];
+  for (var i = 0; i < agent.fields.length; i++) {
+    var f = agent.fields[i];
+    var cur = currentVal(aid, f.key);
+    var base = baselines[aid][f.key];
+    if (String(cur == null ? "" : cur) === String(base == null ? "" : base)) continue;
+    var unit = f.unit ? " " + f.unit : "";
+    changes.push("imposta " + f.label + " a " + fmtVal(cur) + unit + " (era " + fmtVal(base) + unit + ")");
+  }
+  if (!changes.length) return "";
+  return "Per " + agent.label + ": " + changes.join(", ") + ".";
+}
+function buildAllMessages() {
+  var parts = [];
+  for (var aid in DATA.settings) {
+    if (!DATA.settings.hasOwnProperty(aid)) continue;
+    var msg = buildAgentMessage(aid);
+    if (msg) parts.push(DATA.settings[aid].mention + "\n" + msg);
+  }
+  return parts.join("\n\n");
+}
+function refreshChanged() {
+  for (var aid in DATA.settings) {
+    if (!DATA.settings.hasOwnProperty(aid)) continue;
+    var agent = DATA.settings[aid];
+    for (var i = 0; i < agent.fields.length; i++) {
+      var f = agent.fields[i];
+      var field = document.querySelector('.field[data-agent="' + aid + '"][data-key="' + f.key + '"]');
+      if (!field) continue;
+      var cur = currentVal(aid, f.key);
+      var base = baselines[aid][f.key];
+      var same = String(cur == null ? "" : cur) === String(base == null ? "" : base);
+      if (same) field.classList.remove("changed"); else field.classList.add("changed");
+    }
+    var box = document.querySelector('textarea[data-agent-msg="' + aid + '"]');
+    if (box) box.value = buildAgentMessage(aid);
+  }
+  $("msg-all").value = buildAllMessages();
+}
+function renderSettings() {
+  var S = DATA.settings || {};
+  var html = "";
+  for (var aid in S) {
+    if (!S.hasOwnProperty(aid)) continue;
+    var agent = S[aid];
+    html += '<details class="agent" open><summary><h3 style="margin:0">' + esc(agent.label) + '</h3><span class="mono">' +
+      esc(agent.mention) + '</span></summary><div class="body">';
+    for (var i = 0; i < agent.fields.length; i++) {
+      var f = agent.fields[i];
+      var known = !(f.value === null || f.value === undefined);
+      html += '<div class="field" data-agent="' + aid + '" data-key="' + f.key + '"><label>' + esc(f.label) + '</label>';
+      if (!known) html += '<div class="unk">sconosciuto</div>';
+      if (f.type === "select") {
+        html += '<div class="ctrl"><select data-agent="' + aid + '" data-key="' + f.key + '" data-role="input">';
+        if (!known) html += '<option value="">— sconosciuto —</option>';
+        var opts = f.options || [];
+        for (var o = 0; o < opts.length; o++) {
+          var sel = known && String(opts[o].value) === String(f.value) ? " selected" : "";
+          html += '<option value="' + esc(opts[o].value) + '"' + sel + '>' + esc(opts[o].label) + '</option>';
+        }
+        html += '</select></div>';
+      } else {
+        html += '<div class="ctrl"><input type="range" data-agent="' + aid + '" data-key="' + f.key +
+          '" data-role="range" min="' + f.min + '" max="' + f.max + '" step="' + f.step + '"' +
+          (known ? ' value="' + esc(f.value) + '"' : ' value="' + f.min + '" disabled') + '/>' +
+          '<input type="number" data-agent="' + aid + '" data-key="' + f.key + '" data-role="input" min="' +
+          f.min + '" max="' + f.max + '" step="' + f.step + '"' +
+          (known ? ' value="' + esc(f.value) + '"' : ' value="" placeholder="sconosciuto"') + '/></div>';
+      }
+      html += '<div class="src">fonte: ' + esc(f.source) + '</div></div>';
+    }
+    html += '<textarea class="msgbox" data-agent-msg="' + aid + '" readonly placeholder="Nessuna modifica per questo agente…"></textarea>' +
+      '<div class="btn-row"><button class="btn" type="button" data-copy-agent="' + aid + '">Copia messaggio</button>' +
+      '<button class="btn" type="button" data-send-agent="' + aid + '">Invia a DeskDashboard</button></div>';
+    html += '</div></details>';
+  }
+  $("settings").innerHTML = html;
+  $("settings").addEventListener("input", function(e) {
+    var t = e.target;
+    var aid = t.getAttribute("data-agent");
+    var key = t.getAttribute("data-key");
+    if (!aid || !key) return;
+    var role = t.getAttribute("data-role");
+    if (role === "range") {
+      var num = document.querySelector('input[data-agent="' + aid + '"][data-key="' + key + '"][data-role="input"]');
+      if (num) num.value = t.value;
+    } else if (role === "input" && t.type === "number") {
+      var rng = document.querySelector('input[data-agent="' + aid + '"][data-key="' + key + '"][data-role="range"]');
+      if (rng && t.value !== "") rng.value = t.value;
+    }
+    refreshChanged();
+  });
+  $("settings").addEventListener("click", function(e) {
+    var b = e.target.closest ? e.target.closest("[data-copy-agent]") : null;
+    if (b) {
+      var aid = b.getAttribute("data-copy-agent");
+      var msg = buildAgentMessage(aid);
+      if (!msg) { toast("Nessuna modifica"); return; }
+      copyText(DATA.settings[aid].mention + "\n" + msg);
+      return;
+    }
+    var s = e.target.closest ? e.target.closest("[data-send-agent]") : null;
+    if (s) {
+      var aid2 = s.getAttribute("data-send-agent");
+      var msg2 = buildAgentMessage(aid2);
+      if (!msg2) { toast("Nessuna modifica"); return; }
+      sendRichiesta(DATA.settings[aid2].mention + "\n" + msg2);
+    }
+  });
+}
+function resetSettings() {
+  for (var aid in DATA.settings) {
+    if (!DATA.settings.hasOwnProperty(aid)) continue;
+    var agent = DATA.settings[aid];
+    for (var i = 0; i < agent.fields.length; i++) {
+      var f = agent.fields[i];
+      var base = baselines[aid][f.key];
+      var input = document.querySelector('[data-agent="' + aid + '"][data-key="' + f.key + '"][data-role="input"]');
+      var range = document.querySelector('[data-agent="' + aid + '"][data-key="' + f.key + '"][data-role="range"]');
+      if (input) input.value = (base === null || base === undefined) ? "" : base;
+      if (range && !(base === null || base === undefined)) range.value = base;
+    }
+  }
+  refreshChanged();
+  toast("Ripristinato");
+}
+function sendRichiesta(text) {
+  if (!text) { toast("Nessuna modifica"); return; }
+  if (text.length > 4096) { toast("Messaggio troppo lungo"); return; }
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "richiesta");
+  xhr.setRequestHeader("Content-Type", "text/plain; charset=utf-8");
+  xhr.onload = function() {
+    if (xhr.status >= 200 && xhr.status < 300) {
+      var status = $("send-status");
+      if (status) status.textContent = "Richiesta salvata, DeskDashboard la inoltrerà";
+      toast("Richiesta salvata");
+    } else toast("Invio fallito (" + xhr.status + ")");
+  };
+  xhr.onerror = function() { toast("Invio non riuscito"); };
+  xhr.send(text);
+}
+
+function render(data) {
+  if (!data) return;
+  DATA = data;
+  renderHero();
+  renderStats();
+  renderChart();
+  renderOpen();
+  renderCloses();
+  renderPastSessions();
+  renderWaiting();
+  renderDecisions();
+  renderAgents();
+  renderLinks();
+  initBaselines();
+  renderSettings();
+  refreshChanged();
+}
+
+function fmtHmFromAsOf(asOf) {
+  if (!asOf) return "—";
+  // "2026-11-02 17:15:10 Rome" or ISO
+  var m = String(asOf).match(/(\d{2}:\d{2})/);
+  if (m) return m[1];
+  if (DATA && DATA.as_of_hm) return DATA.as_of_hm;
+  return String(asOf).slice(11, 16) || "—";
+}
+
+function setRefreshBusy(on) {
+  var b = $("btn-refresh");
+  if (!b) return;
+  if (on) {
+    b.classList.add("busy");
+    b.setAttribute("data-label", b.getAttribute("data-label") || b.textContent);
+    b.innerHTML = '<span class="spin" aria-hidden="true"></span>Aggiornamento…';
+  } else {
+    b.classList.remove("busy");
+    b.textContent = b.getAttribute("data-label") || "Aggiorna";
+  }
+}
+
+function applyFreshData(next, opts) {
+  opts = opts || {};
+  var silent = !!opts.silent;
+  var prevAsOf = DATA && DATA.as_of;
+  var nextAsOf = next && next.as_of;
+  render(next);
+  if (silent) {
+    if (nextAsOf && nextAsOf !== prevAsOf) {
+      toast("Dati aggiornati alle " + fmtHmFromAsOf(nextAsOf));
+    }
+    return;
+  }
+  if (nextAsOf && nextAsOf !== prevAsOf) {
+    toast("Dati aggiornati alle " + fmtHmFromAsOf(nextAsOf));
+  } else {
+    toast("Nessun dato più recente pubblicato (ultimi dati " + fmtHmFromAsOf(prevAsOf || nextAsOf) + ")");
+  }
+}
+
+function hardReloadBust() {
+  var u = location.href.split("#")[0];
+  var sep = u.indexOf("?") >= 0 ? "&" : "?";
+  location.href = u + sep + "r=" + Date.now();
+}
+
+function fetchDashboardData() {
+  var url = "data.json?t=" + Date.now();
+  return fetch(url, { cache: "no-store", credentials: "same-origin" }).then(function(res) {
+    if (!res || !res.ok) throw new Error("http " + (res && res.status));
+    return res.json();
+  });
+}
+
+function refreshData(opts) {
+  opts = opts || {};
+  var manual = !!opts.manual;
+  if (manual) setRefreshBusy(true);
+  return fetchDashboardData().then(function(next) {
+    applyFreshData(next, { silent: !manual });
+  }).catch(function() {
+    if (manual) {
+      toast("Aggiornamento fallito, ricarico…");
+      setTimeout(hardReloadBust, 400);
+    }
+    // silent auto-refresh: ignore failures
+  }).then(function() {
+    if (manual) setRefreshBusy(false);
+  });
+}
+
+function boot() {
+  render(DATA);
+  $("btn-copy-all").onclick = function() {
+    var t = buildAllMessages();
+    if (!t) { toast("Nessuna modifica"); return; }
+    copyText(t);
+  };
+  $("btn-send-all").onclick = function() { sendRichiesta(buildAllMessages()); };
+  $("btn-reset").onclick = resetSettings;
+  $("btn-refresh").onclick = function() { refreshData({ manual: true }); };
+  setInterval(function(){ refreshData({ manual: false }); }, 60000);
+}
+boot();
+</script>
+</body>
+</html>
