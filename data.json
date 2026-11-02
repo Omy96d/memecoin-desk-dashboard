@@ -1,6 +1,6 @@
 {
-  "as_of": "2026-11-02 19:14:49 Rome",
-  "as_of_hm": "19:14",
+  "as_of": "2026-11-02 19:16:07 Rome",
+  "as_of_hm": "19:16",
   "mode": "PAPER",
   "session": {
     "number": 2,
@@ -13,24 +13,24 @@
     "stack_initial_usd": 50.0,
     "stack_source": "paper/state.json start_stack_usd",
     "cash_after_last_buy_usd": null,
-    "equity_usd": 50.0,
-    "realized_pnl_usd": 0,
-    "unrealized_pnl_usd": 0,
-    "total_pnl_usd": 0,
+    "equity_usd": 49.38,
+    "realized_pnl_usd": -0.89,
+    "unrealized_pnl_usd": 0.27,
+    "total_pnl_usd": -0.62,
     "wins": 0,
-    "losses": 0,
-    "n_open": 0,
-    "n_closed": 0,
-    "n_exits": 0,
-    "n_trades": 0,
-    "win_rate_pct": null,
+    "losses": 1,
+    "n_open": 1,
+    "n_closed": 1,
+    "n_exits": 1,
+    "n_trades": 1,
+    "win_rate_pct": 0.0,
     "avg_win_usd": null,
-    "avg_loss_usd": null,
-    "total_pnl_pct_stack": 0.0,
-    "progress_to_stack_pct": 100.0,
+    "avg_loss_usd": -0.89,
+    "total_pnl_pct_stack": -1.24,
+    "progress_to_stack_pct": 98.8,
     "target_stack_usd": 50.0,
     "scanner_passed": 46,
-    "scanner_killed": 578,
+    "scanner_killed": 581,
     "scanner_waiting": 0
   },
   "past_sessions": [
@@ -267,22 +267,22 @@
       {
         "key": "closed_trades",
         "label": "Trade chiusi",
-        "value": 0,
-        "display": "0",
+        "value": 1,
+        "display": "1",
         "threshold": 30,
         "threshold_display": "≥ 30",
         "ok": false,
-        "pending": true
+        "pending": false
       },
       {
         "key": "win_rate",
         "label": "Win rate",
-        "value": null,
-        "display": "—",
+        "value": 0.0,
+        "display": "0.0%",
         "threshold": 50.0,
         "threshold_display": "≥ 50%",
         "ok": false,
-        "pending": true
+        "pending": false
       },
       {
         "key": "payoff",
@@ -297,22 +297,22 @@
       {
         "key": "session_pnl",
         "label": "PNL totale sessione",
-        "value": null,
-        "display": "—",
+        "value": -0.62,
+        "display": "$-0.62",
         "threshold": 0.0,
         "threshold_display": "> $0",
         "ok": false,
-        "pending": true
+        "pending": false
       },
       {
         "key": "expectancy",
         "label": "Expectancy per trade",
-        "value": null,
-        "display": "—",
+        "value": -0.89,
+        "display": "$-0.8900",
         "threshold": 0.0,
         "threshold_display": "> $0",
         "ok": false,
-        "pending": true
+        "pending": false
       }
     ],
     "passed": 0,
@@ -327,44 +327,44 @@
     {
       "id": "scanner",
       "name": "Scanner",
-      "last_activity": "2026-11-02 19:14:48 Rome",
-      "last_hm": "19:14",
+      "last_activity": "2026-11-02 19:16:05 Rome",
+      "last_hm": "19:16",
       "status": "active",
       "process_running": true,
-      "detail": "passes=46 kills=578 waiting=0"
+      "detail": "passes=46 kills=581 waiting=0"
     },
     {
       "id": "auditor",
       "name": "Auditor",
-      "last_activity": "2026-11-02 19:14:33 Rome",
-      "last_hm": "19:14",
+      "last_activity": "2026-11-02 19:15:23 Rome",
+      "last_hm": "19:15",
       "status": "active",
       "process_running": null,
-      "detail": "verdetti=76"
+      "detail": "verdetti=77"
     },
     {
       "id": "analyst",
       "name": "Analyst",
-      "last_activity": "2026-11-02 19:10:40 Rome",
-      "last_hm": "19:10",
+      "last_activity": "2026-11-02 19:15:40 Rome",
+      "last_hm": "19:15",
       "status": "active",
       "process_running": null,
-      "detail": "decisioni=21"
+      "detail": "decisioni=25"
     },
     {
       "id": "executor",
       "name": "Executor",
-      "last_activity": "2026-11-02 18:43:56 Rome",
-      "last_hm": "18:43",
-      "status": "stale",
+      "last_activity": "2026-11-02 19:15:00 Rome",
+      "last_hm": "19:15",
+      "status": "active",
       "process_running": null,
-      "detail": "ticket=0"
+      "detail": "ticket=2"
     },
     {
       "id": "risk",
       "name": "MemecoinRisk",
-      "last_activity": "2026-11-02 19:14:47 Rome",
-      "last_hm": "19:14",
+      "last_activity": "2026-11-02 19:16:03 Rome",
+      "last_hm": "19:16",
       "status": "active",
       "process_running": true,
       "detail": "watcher.py"
@@ -382,34 +382,6 @@
   "waiting_room": [
     {
       "source": "scanner_pass",
-      "symbol": "FINAL",
-      "mint": "HFVVxQGXxJaQc2Q4DuySUcRTF34LgaKDizPfY3Pcpump",
-      "ts": "2026-11-02T19:13:02.987205+01:00",
-      "liquidity_usd": 14276.3691,
-      "stage": "PASS Scanner → in attesa Auditor",
-      "links": {
-        "dexscreener": "https://dexscreener.com/solana/HFVVxQGXxJaQc2Q4DuySUcRTF34LgaKDizPfY3Pcpump",
-        "solscan": "https://solscan.io/token/HFVVxQGXxJaQc2Q4DuySUcRTF34LgaKDizPfY3Pcpump",
-        "birdeye": "https://birdeye.so/token/HFVVxQGXxJaQc2Q4DuySUcRTF34LgaKDizPfY3Pcpump?chain=solana",
-        "pumpfun": "https://pump.fun/coin/HFVVxQGXxJaQc2Q4DuySUcRTF34LgaKDizPfY3Pcpump"
-      }
-    },
-    {
-      "source": "scanner_pass",
-      "symbol": "4",
-      "mint": "FMtss4FPNGetEx6iT4fPorVXwSG8F4cPQPsXay66pump",
-      "ts": "2026-11-02T19:08:10.411540+01:00",
-      "liquidity_usd": 14530.4227,
-      "stage": "PASS Auditor → in attesa Analyst",
-      "links": {
-        "dexscreener": "https://dexscreener.com/solana/FMtss4FPNGetEx6iT4fPorVXwSG8F4cPQPsXay66pump",
-        "solscan": "https://solscan.io/token/FMtss4FPNGetEx6iT4fPorVXwSG8F4cPQPsXay66pump",
-        "birdeye": "https://birdeye.so/token/FMtss4FPNGetEx6iT4fPorVXwSG8F4cPQPsXay66pump?chain=solana",
-        "pumpfun": "https://pump.fun/coin/FMtss4FPNGetEx6iT4fPorVXwSG8F4cPQPsXay66pump"
-      }
-    },
-    {
-      "source": "scanner_pass",
       "symbol": "horse",
       "mint": "9nutvj678qvbouYKqHkSJu3n5cQUEZw42wtPdjekpump",
       "ts": "2026-11-02T19:07:04.793662+01:00",
@@ -424,20 +396,6 @@
     },
     {
       "source": "scanner_pass",
-      "symbol": "NULL",
-      "mint": "5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump",
-      "ts": "2026-11-02T18:50:54.642979+01:00",
-      "liquidity_usd": 21950.6228,
-      "stage": "PASS Auditor → in attesa Analyst",
-      "links": {
-        "dexscreener": "https://dexscreener.com/solana/5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump",
-        "solscan": "https://solscan.io/token/5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump",
-        "birdeye": "https://birdeye.so/token/5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump?chain=solana",
-        "pumpfun": "https://pump.fun/coin/5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump"
-      }
-    },
-    {
-      "source": "scanner_pass",
       "symbol": "PIRATE",
       "mint": "6mXFCoZ515w37YfmwXGJMPfQfiK5tr9WkihW3oN9pump",
       "ts": "2026-11-02T18:22:08.310817+01:00",
@@ -448,20 +406,6 @@
         "solscan": "https://solscan.io/token/6mXFCoZ515w37YfmwXGJMPfQfiK5tr9WkihW3oN9pump",
         "birdeye": "https://birdeye.so/token/6mXFCoZ515w37YfmwXGJMPfQfiK5tr9WkihW3oN9pump?chain=solana",
         "pumpfun": "https://pump.fun/coin/6mXFCoZ515w37YfmwXGJMPfQfiK5tr9WkihW3oN9pump"
-      }
-    },
-    {
-      "source": "scanner_pass",
-      "symbol": "PAUL",
-      "mint": "GnY6RSduqXgJ3nas2CKTDkNbrm2FXYExFxP7BXYEpump",
-      "ts": "2026-11-02T17:47:56.161078+01:00",
-      "liquidity_usd": 15777.6056,
-      "stage": "PASS Auditor → in attesa Analyst",
-      "links": {
-        "dexscreener": "https://dexscreener.com/solana/GnY6RSduqXgJ3nas2CKTDkNbrm2FXYExFxP7BXYEpump",
-        "solscan": "https://solscan.io/token/GnY6RSduqXgJ3nas2CKTDkNbrm2FXYExFxP7BXYEpump",
-        "birdeye": "https://birdeye.so/token/GnY6RSduqXgJ3nas2CKTDkNbrm2FXYExFxP7BXYEpump?chain=solana",
-        "pumpfun": "https://pump.fun/coin/GnY6RSduqXgJ3nas2CKTDkNbrm2FXYExFxP7BXYEpump"
       }
     },
     {
@@ -649,11 +593,197 @@
       }
     }
   ],
-  "open_positions": [],
-  "closed_positions": [],
-  "exits": [],
-  "pnl_curve": [],
+  "open_positions": [
+    {
+      "id": "5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump-2026-11-02T19:15:00+01:00",
+      "symbol": "NULL",
+      "mint": "5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump",
+      "entry_price_usd": 6.702e-05,
+      "last_price_usd": 6.885e-05,
+      "size_usd": 10.0,
+      "stop_price_usd": 6.29988e-05,
+      "take_profit_price_usd": 7.238160000000001e-05,
+      "pnl_usd": 0.27305282005371634,
+      "pnl_pct": 2.7305282005371634,
+      "status": "open",
+      "exit_reason": null,
+      "opened_at": "2026-11-02T19:15:00+01:00",
+      "closed_at": null,
+      "links": {
+        "dexscreener": "https://dexscreener.com/solana/5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump",
+        "solscan": "https://solscan.io/token/5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump",
+        "birdeye": "https://birdeye.so/token/5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump?chain=solana",
+        "pumpfun": "https://pump.fun/coin/5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump"
+      }
+    }
+  ],
+  "closed_positions": [
+    {
+      "id": "FMtss4FPNGetEx6iT4fPorVXwSG8F4cPQPsXay66pump-2026-11-02T19:15:00+01:00",
+      "symbol": "4",
+      "mint": "FMtss4FPNGetEx6iT4fPorVXwSG8F4cPQPsXay66pump",
+      "entry_price_usd": 3.709e-05,
+      "last_price_usd": 3.378e-05,
+      "size_usd": 10.0,
+      "stop_price_usd": 3.48646e-05,
+      "take_profit_price_usd": 4.00572e-05,
+      "pnl_usd": -0.89242383,
+      "pnl_pct": -8.924238,
+      "status": "closed",
+      "exit_reason": "stop",
+      "opened_at": "2026-11-02T19:15:00+01:00",
+      "closed_at": "2026-11-02T19:15:22+01:00",
+      "links": {
+        "dexscreener": "https://dexscreener.com/solana/FMtss4FPNGetEx6iT4fPorVXwSG8F4cPQPsXay66pump",
+        "solscan": "https://solscan.io/token/FMtss4FPNGetEx6iT4fPorVXwSG8F4cPQPsXay66pump",
+        "birdeye": "https://birdeye.so/token/FMtss4FPNGetEx6iT4fPorVXwSG8F4cPQPsXay66pump?chain=solana",
+        "pumpfun": "https://pump.fun/coin/FMtss4FPNGetEx6iT4fPorVXwSG8F4cPQPsXay66pump"
+      }
+    }
+  ],
+  "exits": [
+    {
+      "ts": "2026-11-02T19:15:22+01:00",
+      "opened_at": "2026-11-02T19:15:00+01:00",
+      "symbol": "4",
+      "mint": "FMtss4FPNGetEx6iT4fPorVXwSG8F4cPQPsXay66pump",
+      "pnl_usd": -0.89242383,
+      "pnl_pct": -8.924238,
+      "exit_reason": "stop",
+      "entry_price_usd": 3.709e-05,
+      "exit_price_usd": 3.378e-05,
+      "size_usd": 10.0,
+      "take_profit_price_usd": 4.00572e-05,
+      "stop_price_usd": 3.48646e-05,
+      "links": {
+        "dexscreener": "https://dexscreener.com/solana/FMtss4FPNGetEx6iT4fPorVXwSG8F4cPQPsXay66pump",
+        "solscan": "https://solscan.io/token/FMtss4FPNGetEx6iT4fPorVXwSG8F4cPQPsXay66pump",
+        "birdeye": "https://birdeye.so/token/FMtss4FPNGetEx6iT4fPorVXwSG8F4cPQPsXay66pump?chain=solana",
+        "pumpfun": "https://pump.fun/coin/FMtss4FPNGetEx6iT4fPorVXwSG8F4cPQPsXay66pump"
+      }
+    }
+  ],
+  "pnl_curve": [
+    {
+      "ts": "2026-11-02T19:15:22+01:00",
+      "symbol": "4",
+      "pnl_usd": -0.89242383,
+      "cum_usd": -0.89
+    }
+  ],
   "decisions": [
+    {
+      "ts": "2026-11-02T19:15:40+01:00",
+      "stage": "Analyst",
+      "symbol": "FINAL",
+      "mint": "HFVVxQGXxJaQc2Q4DuySUcRTF34LgaKDizPfY3Pcpump",
+      "decision": "REJECT",
+      "reason": "dump m5 -35.72% < -25%",
+      "links": {
+        "dexscreener": "https://dexscreener.com/solana/HFVVxQGXxJaQc2Q4DuySUcRTF34LgaKDizPfY3Pcpump",
+        "solscan": "https://solscan.io/token/HFVVxQGXxJaQc2Q4DuySUcRTF34LgaKDizPfY3Pcpump",
+        "birdeye": "https://birdeye.so/token/HFVVxQGXxJaQc2Q4DuySUcRTF34LgaKDizPfY3Pcpump?chain=solana",
+        "pumpfun": "https://pump.fun/coin/HFVVxQGXxJaQc2Q4DuySUcRTF34LgaKDizPfY3Pcpump"
+      }
+    },
+    {
+      "ts": "2026-11-02T19:15:34.673617+01:00",
+      "stage": "Scanner",
+      "symbol": "Arrow",
+      "mint": "6jTAiXFSEA5eNV2sTG7GonraeyMCQExemRo8YFBXpump",
+      "decision": "KILL",
+      "reason": "top10_ex_pool:49.67>35",
+      "links": {
+        "dexscreener": "https://dexscreener.com/solana/6jTAiXFSEA5eNV2sTG7GonraeyMCQExemRo8YFBXpump",
+        "solscan": "https://solscan.io/token/6jTAiXFSEA5eNV2sTG7GonraeyMCQExemRo8YFBXpump",
+        "birdeye": "https://birdeye.so/token/6jTAiXFSEA5eNV2sTG7GonraeyMCQExemRo8YFBXpump?chain=solana",
+        "pumpfun": "https://pump.fun/coin/6jTAiXFSEA5eNV2sTG7GonraeyMCQExemRo8YFBXpump"
+      }
+    },
+    {
+      "ts": "2026-11-02T19:15:23+01:00",
+      "stage": "Auditor",
+      "symbol": "FINAL",
+      "mint": "HFVVxQGXxJaQc2Q4DuySUcRTF34LgaKDizPfY3Pcpump",
+      "decision": "PASS",
+      "reason": "",
+      "links": {
+        "dexscreener": "https://dexscreener.com/solana/HFVVxQGXxJaQc2Q4DuySUcRTF34LgaKDizPfY3Pcpump",
+        "solscan": "https://solscan.io/token/HFVVxQGXxJaQc2Q4DuySUcRTF34LgaKDizPfY3Pcpump",
+        "birdeye": "https://birdeye.so/token/HFVVxQGXxJaQc2Q4DuySUcRTF34LgaKDizPfY3Pcpump?chain=solana",
+        "pumpfun": "https://pump.fun/coin/HFVVxQGXxJaQc2Q4DuySUcRTF34LgaKDizPfY3Pcpump"
+      }
+    },
+    {
+      "ts": "2026-11-02T19:15:16.647357+01:00",
+      "stage": "Scanner",
+      "symbol": "horse",
+      "mint": "C8iHa4gmgVAtco7dyEmLtLhC1qG1J1BMQ3EjLTQm36gA",
+      "decision": "KILL",
+      "reason": "copycat_non_pump_mint",
+      "links": {
+        "dexscreener": "https://dexscreener.com/solana/C8iHa4gmgVAtco7dyEmLtLhC1qG1J1BMQ3EjLTQm36gA",
+        "solscan": "https://solscan.io/token/C8iHa4gmgVAtco7dyEmLtLhC1qG1J1BMQ3EjLTQm36gA",
+        "birdeye": "https://birdeye.so/token/C8iHa4gmgVAtco7dyEmLtLhC1qG1J1BMQ3EjLTQm36gA?chain=solana",
+        "pumpfun": "https://pump.fun/coin/C8iHa4gmgVAtco7dyEmLtLhC1qG1J1BMQ3EjLTQm36gA"
+      }
+    },
+    {
+      "ts": "2026-11-02T19:15:07.247299+01:00",
+      "stage": "Scanner",
+      "symbol": "NEX Ai",
+      "mint": "G16ibJyCeXPTKtjYzkGN5oD8F8GPpKLhJ1UeGh9HeU3r",
+      "decision": "KILL",
+      "reason": "copycat_non_pump_mint",
+      "links": {
+        "dexscreener": "https://dexscreener.com/solana/G16ibJyCeXPTKtjYzkGN5oD8F8GPpKLhJ1UeGh9HeU3r",
+        "solscan": "https://solscan.io/token/G16ibJyCeXPTKtjYzkGN5oD8F8GPpKLhJ1UeGh9HeU3r",
+        "birdeye": "https://birdeye.so/token/G16ibJyCeXPTKtjYzkGN5oD8F8GPpKLhJ1UeGh9HeU3r?chain=solana",
+        "pumpfun": "https://pump.fun/coin/G16ibJyCeXPTKtjYzkGN5oD8F8GPpKLhJ1UeGh9HeU3r"
+      }
+    },
+    {
+      "ts": "2026-11-02T19:14:40+01:00",
+      "stage": "Analyst",
+      "symbol": "PAUL",
+      "mint": "GnY6RSduqXgJ3nas2CKTDkNbrm2FXYExFxP7BXYEpump",
+      "decision": "REJECT",
+      "reason": "vol m5 $303 < $3000",
+      "links": {
+        "dexscreener": "https://dexscreener.com/solana/GnY6RSduqXgJ3nas2CKTDkNbrm2FXYExFxP7BXYEpump",
+        "solscan": "https://solscan.io/token/GnY6RSduqXgJ3nas2CKTDkNbrm2FXYExFxP7BXYEpump",
+        "birdeye": "https://birdeye.so/token/GnY6RSduqXgJ3nas2CKTDkNbrm2FXYExFxP7BXYEpump?chain=solana",
+        "pumpfun": "https://pump.fun/coin/GnY6RSduqXgJ3nas2CKTDkNbrm2FXYExFxP7BXYEpump"
+      }
+    },
+    {
+      "ts": "2026-11-02T19:14:40+01:00",
+      "stage": "Analyst",
+      "symbol": "NULL",
+      "mint": "5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump",
+      "decision": "PASS",
+      "reason": "score 86",
+      "links": {
+        "dexscreener": "https://dexscreener.com/solana/5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump",
+        "solscan": "https://solscan.io/token/5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump",
+        "birdeye": "https://birdeye.so/token/5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump?chain=solana",
+        "pumpfun": "https://pump.fun/coin/5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump"
+      }
+    },
+    {
+      "ts": "2026-11-02T19:14:40+01:00",
+      "stage": "Analyst",
+      "symbol": "4",
+      "mint": "FMtss4FPNGetEx6iT4fPorVXwSG8F4cPQPsXay66pump",
+      "decision": "PASS",
+      "reason": "score 65",
+      "links": {
+        "dexscreener": "https://dexscreener.com/solana/FMtss4FPNGetEx6iT4fPorVXwSG8F4cPQPsXay66pump",
+        "solscan": "https://solscan.io/token/FMtss4FPNGetEx6iT4fPorVXwSG8F4cPQPsXay66pump",
+        "birdeye": "https://birdeye.so/token/FMtss4FPNGetEx6iT4fPorVXwSG8F4cPQPsXay66pump?chain=solana",
+        "pumpfun": "https://pump.fun/coin/FMtss4FPNGetEx6iT4fPorVXwSG8F4cPQPsXay66pump"
+      }
+    },
     {
       "ts": "2026-11-02T19:14:33+01:00",
       "stage": "Auditor",
@@ -891,42 +1021,22 @@
         "birdeye": "https://birdeye.so/token/GcfVm4zqPS9HDAzo9kht99QgW4BGvCxTKj4o7HLi2k7R?chain=solana",
         "pumpfun": "https://pump.fun/coin/GcfVm4zqPS9HDAzo9kht99QgW4BGvCxTKj4o7HLi2k7R"
       }
-    },
+    }
+  ],
+  "link_coins": [
     {
-      "ts": "2026-11-02T19:10:01.508030+01:00",
-      "stage": "Scanner",
-      "symbol": "HORSE",
-      "mint": "95Bs3rVtxVqnkSFsrCAuZuMiQZKexoRdXi5RqWXCHCHh",
-      "decision": "KILL",
-      "reason": "copycat_non_pump_mint",
+      "symbol": "NULL",
+      "mint": "5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump",
       "links": {
-        "dexscreener": "https://dexscreener.com/solana/95Bs3rVtxVqnkSFsrCAuZuMiQZKexoRdXi5RqWXCHCHh",
-        "solscan": "https://solscan.io/token/95Bs3rVtxVqnkSFsrCAuZuMiQZKexoRdXi5RqWXCHCHh",
-        "birdeye": "https://birdeye.so/token/95Bs3rVtxVqnkSFsrCAuZuMiQZKexoRdXi5RqWXCHCHh?chain=solana",
-        "pumpfun": "https://pump.fun/coin/95Bs3rVtxVqnkSFsrCAuZuMiQZKexoRdXi5RqWXCHCHh"
+        "dexscreener": "https://dexscreener.com/solana/5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump",
+        "solscan": "https://solscan.io/token/5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump",
+        "birdeye": "https://birdeye.so/token/5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump?chain=solana",
+        "pumpfun": "https://pump.fun/coin/5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump"
       }
     },
     {
-      "ts": "2026-11-02T19:09:39.203497+01:00",
-      "stage": "Scanner",
-      "symbol": "Minecraft",
-      "mint": "fxS7bySEKikgsY96WKQtDz6FGoirQCgHCPpfsPfpump",
-      "decision": "KILL",
-      "reason": "top10_ex_pool:88.03>35",
-      "links": {
-        "dexscreener": "https://dexscreener.com/solana/fxS7bySEKikgsY96WKQtDz6FGoirQCgHCPpfsPfpump",
-        "solscan": "https://solscan.io/token/fxS7bySEKikgsY96WKQtDz6FGoirQCgHCPpfsPfpump",
-        "birdeye": "https://birdeye.so/token/fxS7bySEKikgsY96WKQtDz6FGoirQCgHCPpfsPfpump?chain=solana",
-        "pumpfun": "https://pump.fun/coin/fxS7bySEKikgsY96WKQtDz6FGoirQCgHCPpfsPfpump"
-      }
-    },
-    {
-      "ts": "2026-11-02T19:09:28+01:00",
-      "stage": "Auditor",
       "symbol": "4",
       "mint": "FMtss4FPNGetEx6iT4fPorVXwSG8F4cPQPsXay66pump",
-      "decision": "INCOMPLETE",
-      "reason": "",
       "links": {
         "dexscreener": "https://dexscreener.com/solana/FMtss4FPNGetEx6iT4fPorVXwSG8F4cPQPsXay66pump",
         "solscan": "https://solscan.io/token/FMtss4FPNGetEx6iT4fPorVXwSG8F4cPQPsXay66pump",
@@ -934,78 +1044,6 @@
         "pumpfun": "https://pump.fun/coin/FMtss4FPNGetEx6iT4fPorVXwSG8F4cPQPsXay66pump"
       }
     },
-    {
-      "ts": "2026-11-02T19:09:13.591849+01:00",
-      "stage": "Scanner",
-      "symbol": "HORSE",
-      "mint": "FFtfd7VPttUdMQkjuyX3b5WRz823RjfnYqXqhd4g8ZXr",
-      "decision": "KILL",
-      "reason": "copycat_non_pump_mint",
-      "links": {
-        "dexscreener": "https://dexscreener.com/solana/FFtfd7VPttUdMQkjuyX3b5WRz823RjfnYqXqhd4g8ZXr",
-        "solscan": "https://solscan.io/token/FFtfd7VPttUdMQkjuyX3b5WRz823RjfnYqXqhd4g8ZXr",
-        "birdeye": "https://birdeye.so/token/FFtfd7VPttUdMQkjuyX3b5WRz823RjfnYqXqhd4g8ZXr?chain=solana",
-        "pumpfun": "https://pump.fun/coin/FFtfd7VPttUdMQkjuyX3b5WRz823RjfnYqXqhd4g8ZXr"
-      }
-    },
-    {
-      "ts": "2026-11-02T19:08:29.997650+01:00",
-      "stage": "Scanner",
-      "symbol": "CATO",
-      "mint": "58Ssv2Puu3dLSmRxGBkgLn1JQcZuvBkopiKK83KAf3Hd",
-      "decision": "KILL",
-      "reason": "copycat_non_pump_mint",
-      "links": {
-        "dexscreener": "https://dexscreener.com/solana/58Ssv2Puu3dLSmRxGBkgLn1JQcZuvBkopiKK83KAf3Hd",
-        "solscan": "https://solscan.io/token/58Ssv2Puu3dLSmRxGBkgLn1JQcZuvBkopiKK83KAf3Hd",
-        "birdeye": "https://birdeye.so/token/58Ssv2Puu3dLSmRxGBkgLn1JQcZuvBkopiKK83KAf3Hd?chain=solana",
-        "pumpfun": "https://pump.fun/coin/58Ssv2Puu3dLSmRxGBkgLn1JQcZuvBkopiKK83KAf3Hd"
-      }
-    },
-    {
-      "ts": "2026-11-02T19:08:29.994842+01:00",
-      "stage": "Scanner",
-      "symbol": "HORSE",
-      "mint": "8qLLy8K6YpgWN1QMtsSEJiT6d6wYGzCBs2UetP4gKc3S",
-      "decision": "KILL",
-      "reason": "copycat_non_pump_mint",
-      "links": {
-        "dexscreener": "https://dexscreener.com/solana/8qLLy8K6YpgWN1QMtsSEJiT6d6wYGzCBs2UetP4gKc3S",
-        "solscan": "https://solscan.io/token/8qLLy8K6YpgWN1QMtsSEJiT6d6wYGzCBs2UetP4gKc3S",
-        "birdeye": "https://birdeye.so/token/8qLLy8K6YpgWN1QMtsSEJiT6d6wYGzCBs2UetP4gKc3S?chain=solana",
-        "pumpfun": "https://pump.fun/coin/8qLLy8K6YpgWN1QMtsSEJiT6d6wYGzCBs2UetP4gKc3S"
-      }
-    },
-    {
-      "ts": "2026-11-02T19:08:29.991831+01:00",
-      "stage": "Scanner",
-      "symbol": "Polycrisis",
-      "mint": "9ZQPEwYLbatuBiX7C1rvfGLe2v8dde9ui7EskiuRK5XG",
-      "decision": "KILL",
-      "reason": "copycat_non_pump_mint",
-      "links": {
-        "dexscreener": "https://dexscreener.com/solana/9ZQPEwYLbatuBiX7C1rvfGLe2v8dde9ui7EskiuRK5XG",
-        "solscan": "https://solscan.io/token/9ZQPEwYLbatuBiX7C1rvfGLe2v8dde9ui7EskiuRK5XG",
-        "birdeye": "https://birdeye.so/token/9ZQPEwYLbatuBiX7C1rvfGLe2v8dde9ui7EskiuRK5XG?chain=solana",
-        "pumpfun": "https://pump.fun/coin/9ZQPEwYLbatuBiX7C1rvfGLe2v8dde9ui7EskiuRK5XG"
-      }
-    },
-    {
-      "ts": "2026-11-02T19:08:27.790116+01:00",
-      "stage": "Scanner",
-      "symbol": "XTX",
-      "mint": "9Tj1hAzETFkLpdTn8R45UuK2PndbLXJekk3MLfDpump",
-      "decision": "KILL",
-      "reason": "top10_ex_pool:99.78>35",
-      "links": {
-        "dexscreener": "https://dexscreener.com/solana/9Tj1hAzETFkLpdTn8R45UuK2PndbLXJekk3MLfDpump",
-        "solscan": "https://solscan.io/token/9Tj1hAzETFkLpdTn8R45UuK2PndbLXJekk3MLfDpump",
-        "birdeye": "https://birdeye.so/token/9Tj1hAzETFkLpdTn8R45UuK2PndbLXJekk3MLfDpump?chain=solana",
-        "pumpfun": "https://pump.fun/coin/9Tj1hAzETFkLpdTn8R45UuK2PndbLXJekk3MLfDpump"
-      }
-    }
-  ],
-  "link_coins": [
     {
       "symbol": "FINAL",
       "mint": "HFVVxQGXxJaQc2Q4DuySUcRTF34LgaKDizPfY3Pcpump",
@@ -1027,16 +1065,6 @@
       }
     },
     {
-      "symbol": "4",
-      "mint": "FMtss4FPNGetEx6iT4fPorVXwSG8F4cPQPsXay66pump",
-      "links": {
-        "dexscreener": "https://dexscreener.com/solana/FMtss4FPNGetEx6iT4fPorVXwSG8F4cPQPsXay66pump",
-        "solscan": "https://solscan.io/token/FMtss4FPNGetEx6iT4fPorVXwSG8F4cPQPsXay66pump",
-        "birdeye": "https://birdeye.so/token/FMtss4FPNGetEx6iT4fPorVXwSG8F4cPQPsXay66pump?chain=solana",
-        "pumpfun": "https://pump.fun/coin/FMtss4FPNGetEx6iT4fPorVXwSG8F4cPQPsXay66pump"
-      }
-    },
-    {
       "symbol": "horse",
       "mint": "9nutvj678qvbouYKqHkSJu3n5cQUEZw42wtPdjekpump",
       "links": {
@@ -1054,16 +1082,6 @@
         "solscan": "https://solscan.io/token/C3v4Xs6ytkLdgpoxxgTnVxpKnfmij9mLwL1XCvRtpump",
         "birdeye": "https://birdeye.so/token/C3v4Xs6ytkLdgpoxxgTnVxpKnfmij9mLwL1XCvRtpump?chain=solana",
         "pumpfun": "https://pump.fun/coin/C3v4Xs6ytkLdgpoxxgTnVxpKnfmij9mLwL1XCvRtpump"
-      }
-    },
-    {
-      "symbol": "NULL",
-      "mint": "5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump",
-      "links": {
-        "dexscreener": "https://dexscreener.com/solana/5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump",
-        "solscan": "https://solscan.io/token/5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump",
-        "birdeye": "https://birdeye.so/token/5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump?chain=solana",
-        "pumpfun": "https://pump.fun/coin/5LoukJze454D696R3nGUiUQDGvsTaaakbmC3kQTcpump"
       }
     },
     {
@@ -1379,8 +1397,6 @@
     }
   },
   "gaps": [
-    "Nessuna posizione PAPER aperta nella sessione corrente.",
-    "Sessione corrente senza trade chiusi ancora.",
     "Analyst score_min sconosciuto (nessuna costante su disco).",
     "Auditor e Analyst non hanno processo residente (on-demand); status da mtime log.",
     "Discrepanza sessione 1 vs state.json: realized_pnl_usd: file=-136.93 state.json=-136.94; end_stack_usd: file=63.07 state.json=63.06"
