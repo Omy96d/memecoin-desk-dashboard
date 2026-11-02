@@ -1,19 +1,19 @@
 {
-  "as_of": "2026-11-02 19:10:42 Rome",
-  "as_of_hm": "19:10",
+  "as_of": "2026-11-02 19:12:16 Rome",
+  "as_of_hm": "19:12",
   "mode": "PAPER",
   "session": {
     "number": 2,
     "started_at": "2026-11-02T18:43:00+01:00",
-    "start_stack_usd": 200.0,
+    "start_stack_usd": 50.0,
     "label": "Sessione 2"
   },
   "summary": {
     "session": 2,
-    "stack_initial_usd": 200.0,
+    "stack_initial_usd": 50.0,
     "stack_source": "paper/state.json start_stack_usd",
     "cash_after_last_buy_usd": null,
-    "equity_usd": 200.0,
+    "equity_usd": 50.0,
     "realized_pnl_usd": 0,
     "unrealized_pnl_usd": 0,
     "total_pnl_usd": 0,
@@ -28,10 +28,10 @@
     "avg_loss_usd": null,
     "total_pnl_pct_stack": 0.0,
     "progress_to_stack_pct": 100.0,
-    "target_stack_usd": 200.0,
+    "target_stack_usd": 50.0,
     "scanner_passed": 45,
-    "scanner_killed": 570,
-    "scanner_waiting": 0
+    "scanner_killed": 572,
+    "scanner_waiting": 1
   },
   "past_sessions": [
     {
@@ -259,11 +259,11 @@
     {
       "id": "scanner",
       "name": "Scanner",
-      "last_activity": "2026-11-02 19:10:41 Rome",
-      "last_hm": "19:10",
+      "last_activity": "2026-11-02 19:12:14 Rome",
+      "last_hm": "19:12",
       "status": "active",
       "process_running": true,
-      "detail": "passes=45 kills=570 waiting=0"
+      "detail": "passes=45 kills=572 waiting=1"
     },
     {
       "id": "auditor",
@@ -295,8 +295,8 @@
     {
       "id": "risk",
       "name": "MemecoinRisk",
-      "last_activity": "2026-11-02 19:10:38 Rome",
-      "last_hm": "19:10",
+      "last_activity": "2026-11-02 19:12:13 Rome",
+      "last_hm": "19:12",
       "status": "active",
       "process_running": true,
       "detail": "watcher.py"
@@ -312,6 +312,20 @@
     }
   ],
   "waiting_room": [
+    {
+      "source": "scanner_waiting",
+      "symbol": "income",
+      "mint": "2RjouGnpJjTFBByfmGF6iRJiwZsS3vMuSyGEYSnfpump",
+      "ts": "2026-11-02T19:12:14.449049+01:00",
+      "liquidity_usd": 2.2541,
+      "stage": "in attesa Scanner",
+      "links": {
+        "dexscreener": "https://dexscreener.com/solana/2RjouGnpJjTFBByfmGF6iRJiwZsS3vMuSyGEYSnfpump",
+        "solscan": "https://solscan.io/token/2RjouGnpJjTFBByfmGF6iRJiwZsS3vMuSyGEYSnfpump",
+        "birdeye": "https://birdeye.so/token/2RjouGnpJjTFBByfmGF6iRJiwZsS3vMuSyGEYSnfpump?chain=solana",
+        "pumpfun": "https://pump.fun/coin/2RjouGnpJjTFBByfmGF6iRJiwZsS3vMuSyGEYSnfpump"
+      }
+    },
     {
       "source": "scanner_pass",
       "symbol": "4",
@@ -572,6 +586,34 @@
   "exits": [],
   "pnl_curve": [],
   "decisions": [
+    {
+      "ts": "2026-11-02T19:12:14.444776+01:00",
+      "stage": "Scanner",
+      "symbol": "CATO",
+      "mint": "BbobRKeKaXmz7U24But71WHcqEMwmF2CoKyuhsmPQTeV",
+      "decision": "KILL",
+      "reason": "copycat_non_pump_mint",
+      "links": {
+        "dexscreener": "https://dexscreener.com/solana/BbobRKeKaXmz7U24But71WHcqEMwmF2CoKyuhsmPQTeV",
+        "solscan": "https://solscan.io/token/BbobRKeKaXmz7U24But71WHcqEMwmF2CoKyuhsmPQTeV",
+        "birdeye": "https://birdeye.so/token/BbobRKeKaXmz7U24But71WHcqEMwmF2CoKyuhsmPQTeV?chain=solana",
+        "pumpfun": "https://pump.fun/coin/BbobRKeKaXmz7U24But71WHcqEMwmF2CoKyuhsmPQTeV"
+      }
+    },
+    {
+      "ts": "2026-11-02T19:11:32.325494+01:00",
+      "stage": "Scanner",
+      "symbol": "HORSE",
+      "mint": "J9krcwoV3SUCtgy5zhiqQVnGbP4VLAewZ8JXvSHFN9pV",
+      "decision": "KILL",
+      "reason": "copycat_non_pump_mint",
+      "links": {
+        "dexscreener": "https://dexscreener.com/solana/J9krcwoV3SUCtgy5zhiqQVnGbP4VLAewZ8JXvSHFN9pV",
+        "solscan": "https://solscan.io/token/J9krcwoV3SUCtgy5zhiqQVnGbP4VLAewZ8JXvSHFN9pV",
+        "birdeye": "https://birdeye.so/token/J9krcwoV3SUCtgy5zhiqQVnGbP4VLAewZ8JXvSHFN9pV?chain=solana",
+        "pumpfun": "https://pump.fun/coin/J9krcwoV3SUCtgy5zhiqQVnGbP4VLAewZ8JXvSHFN9pV"
+      }
+    },
     {
       "ts": "2026-11-02T19:10:40+01:00",
       "stage": "Analyst",
@@ -892,34 +934,6 @@
         "solscan": "https://solscan.io/token/C7sGcc2hzSbCA7A2Q2Sd9zJrGo6zrAtRDEVG45QKpump",
         "birdeye": "https://birdeye.so/token/C7sGcc2hzSbCA7A2Q2Sd9zJrGo6zrAtRDEVG45QKpump?chain=solana",
         "pumpfun": "https://pump.fun/coin/C7sGcc2hzSbCA7A2Q2Sd9zJrGo6zrAtRDEVG45QKpump"
-      }
-    },
-    {
-      "ts": "2026-11-02T19:05:28.900546+01:00",
-      "stage": "Scanner",
-      "symbol": "OLDPUMP",
-      "mint": "4WpWwNrfK6TJ99wUZMzjjbigygpkGqjPLnsa9fWWU6M6",
-      "decision": "KILL",
-      "reason": "copycat_non_pump_mint",
-      "links": {
-        "dexscreener": "https://dexscreener.com/solana/4WpWwNrfK6TJ99wUZMzjjbigygpkGqjPLnsa9fWWU6M6",
-        "solscan": "https://solscan.io/token/4WpWwNrfK6TJ99wUZMzjjbigygpkGqjPLnsa9fWWU6M6",
-        "birdeye": "https://birdeye.so/token/4WpWwNrfK6TJ99wUZMzjjbigygpkGqjPLnsa9fWWU6M6?chain=solana",
-        "pumpfun": "https://pump.fun/coin/4WpWwNrfK6TJ99wUZMzjjbigygpkGqjPLnsa9fWWU6M6"
-      }
-    },
-    {
-      "ts": "2026-11-02T19:04:52.688787+01:00",
-      "stage": "Scanner",
-      "symbol": "BEN",
-      "mint": "DgJnB3sdm3AbbezX4ppdenG7AfSv9dYMbpkYdYY5RXgc",
-      "decision": "KILL",
-      "reason": "copycat_non_pump_mint",
-      "links": {
-        "dexscreener": "https://dexscreener.com/solana/DgJnB3sdm3AbbezX4ppdenG7AfSv9dYMbpkYdYY5RXgc",
-        "solscan": "https://solscan.io/token/DgJnB3sdm3AbbezX4ppdenG7AfSv9dYMbpkYdYY5RXgc",
-        "birdeye": "https://birdeye.so/token/DgJnB3sdm3AbbezX4ppdenG7AfSv9dYMbpkYdYY5RXgc?chain=solana",
-        "pumpfun": "https://pump.fun/coin/DgJnB3sdm3AbbezX4ppdenG7AfSv9dYMbpkYdYY5RXgc"
       }
     }
   ],
@@ -1253,12 +1267,12 @@
           "key": "stack_usd",
           "label": "Stack size (USD)",
           "type": "number",
-          "value": 200,
+          "value": 50.0,
           "min": 50,
           "max": 5000,
           "step": 10,
           "unit": "USD",
-          "source": "paper/state.json start_stack_usd"
+          "source": "paper/state.json settings.stack_usd"
         },
         {
           "key": "ticket_pct",
@@ -1269,18 +1283,18 @@
           "max": 25,
           "step": 0.5,
           "unit": "%",
-          "source": "tickets_session1_2026-11-02.csv raw_8pct/stack_usd"
+          "source": "paper/state.json settings.pct_of_stack"
         },
         {
           "key": "fomo_min",
           "label": "Min ticket (USD)",
           "type": "number",
-          "value": 47.5,
+          "value": 10.0,
           "min": 10,
           "max": 500,
           "step": 2.5,
           "unit": "USD",
-          "source": "tickets_session1_2026-11-02.csv ticket_usd + nota FOMO"
+          "source": "paper/state.json settings.min_ticket_usd"
         },
         {
           "key": "pool_cap_pct",
@@ -1291,7 +1305,7 @@
           "max": 10,
           "step": 0.5,
           "unit": "%",
-          "source": "regola Executor: cap 2% liquidità pool (tickets liq_cap_2pct)"
+          "source": "paper/state.json settings.max_pct_pool_liquidity"
         }
       ]
     }
