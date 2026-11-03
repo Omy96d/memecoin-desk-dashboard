@@ -1,6 +1,6 @@
 {
-  "as_of": "2026-11-03 10:51:02 Rome",
-  "as_of_hm": "10:51",
+  "as_of": "2026-11-03 10:56:09 Rome",
+  "as_of_hm": "10:56",
   "mode": "PAPER",
   "session": {
     "number": 2,
@@ -30,7 +30,7 @@
     "progress_to_stack_pct": 56.7,
     "target_stack_usd": 50.0,
     "scanner_passed": 74,
-    "scanner_killed": 947,
+    "scanner_killed": 953,
     "scanner_waiting": 0
   },
   "past_sessions": [
@@ -334,11 +334,11 @@
     {
       "id": "scanner",
       "name": "Scanner",
-      "last_activity": "2026-11-03 10:51:00 Rome",
-      "last_hm": "10:51",
+      "last_activity": "2026-11-03 10:56:07 Rome",
+      "last_hm": "10:56",
       "status": "active",
       "process_running": true,
-      "detail": "passes=74 kills=947 waiting=0"
+      "detail": "passes=74 kills=953 waiting=0"
     },
     {
       "id": "auditor",
@@ -370,8 +370,8 @@
     {
       "id": "risk",
       "name": "MemecoinRisk",
-      "last_activity": "2026-11-03 10:50:58 Rome",
-      "last_hm": "10:50",
+      "last_activity": "2026-11-03 10:56:08 Rome",
+      "last_hm": "10:56",
       "status": "active",
       "process_running": true,
       "detail": "watcher.py"
@@ -1109,6 +1109,90 @@
   ],
   "decisions": [
     {
+      "ts": "2026-11-03T10:55:30.092128+01:00",
+      "stage": "Scanner",
+      "symbol": "LEAN",
+      "mint": "4gLTDxQwNXppjZV232GJss2nnXufyARLQ9TNMZ7npump",
+      "decision": "KILL",
+      "reason": "liquidity_below_floor:4.01<5000",
+      "links": {
+        "dexscreener": "https://dexscreener.com/solana/4gLTDxQwNXppjZV232GJss2nnXufyARLQ9TNMZ7npump",
+        "solscan": "https://solscan.io/token/4gLTDxQwNXppjZV232GJss2nnXufyARLQ9TNMZ7npump",
+        "birdeye": "https://birdeye.so/token/4gLTDxQwNXppjZV232GJss2nnXufyARLQ9TNMZ7npump?chain=solana",
+        "pumpfun": "https://pump.fun/coin/4gLTDxQwNXppjZV232GJss2nnXufyARLQ9TNMZ7npump"
+      }
+    },
+    {
+      "ts": "2026-11-03T10:55:25.359469+01:00",
+      "stage": "Scanner",
+      "symbol": "BTC",
+      "mint": "CYow1u1HrUF1REbEKZ24pmCBacD7ZF1GB6HrhJzEtowT",
+      "decision": "KILL",
+      "reason": "copycat_non_pump_mint",
+      "links": {
+        "dexscreener": "https://dexscreener.com/solana/CYow1u1HrUF1REbEKZ24pmCBacD7ZF1GB6HrhJzEtowT",
+        "solscan": "https://solscan.io/token/CYow1u1HrUF1REbEKZ24pmCBacD7ZF1GB6HrhJzEtowT",
+        "birdeye": "https://birdeye.so/token/CYow1u1HrUF1REbEKZ24pmCBacD7ZF1GB6HrhJzEtowT?chain=solana",
+        "pumpfun": "https://pump.fun/coin/CYow1u1HrUF1REbEKZ24pmCBacD7ZF1GB6HrhJzEtowT"
+      }
+    },
+    {
+      "ts": "2026-11-03T10:55:25.354791+01:00",
+      "stage": "Scanner",
+      "symbol": "OMBRO",
+      "mint": "4kRFFM9u3RC6f4DuRzRGJHpA9J1pYZsidWoyPriMMVfY",
+      "decision": "KILL",
+      "reason": "copycat_non_pump_mint",
+      "links": {
+        "dexscreener": "https://dexscreener.com/solana/4kRFFM9u3RC6f4DuRzRGJHpA9J1pYZsidWoyPriMMVfY",
+        "solscan": "https://solscan.io/token/4kRFFM9u3RC6f4DuRzRGJHpA9J1pYZsidWoyPriMMVfY",
+        "birdeye": "https://birdeye.so/token/4kRFFM9u3RC6f4DuRzRGJHpA9J1pYZsidWoyPriMMVfY?chain=solana",
+        "pumpfun": "https://pump.fun/coin/4kRFFM9u3RC6f4DuRzRGJHpA9J1pYZsidWoyPriMMVfY"
+      }
+    },
+    {
+      "ts": "2026-11-03T10:55:25.350613+01:00",
+      "stage": "Scanner",
+      "symbol": "GENESIS",
+      "mint": "Efkh6Huku5K2rryW66QVpov2WwBPiVMEFgzZMJBxmaJg",
+      "decision": "KILL",
+      "reason": "copycat_non_pump_mint",
+      "links": {
+        "dexscreener": "https://dexscreener.com/solana/Efkh6Huku5K2rryW66QVpov2WwBPiVMEFgzZMJBxmaJg",
+        "solscan": "https://solscan.io/token/Efkh6Huku5K2rryW66QVpov2WwBPiVMEFgzZMJBxmaJg",
+        "birdeye": "https://birdeye.so/token/Efkh6Huku5K2rryW66QVpov2WwBPiVMEFgzZMJBxmaJg?chain=solana",
+        "pumpfun": "https://pump.fun/coin/Efkh6Huku5K2rryW66QVpov2WwBPiVMEFgzZMJBxmaJg"
+      }
+    },
+    {
+      "ts": "2026-11-03T10:52:44.706579+01:00",
+      "stage": "Scanner",
+      "symbol": "CAPY",
+      "mint": "EdP5DZWXeeUNzVLQwYuUgzMj2D7wadL3TTgUbVnBWSJG",
+      "decision": "KILL",
+      "reason": "copycat_non_pump_mint",
+      "links": {
+        "dexscreener": "https://dexscreener.com/solana/EdP5DZWXeeUNzVLQwYuUgzMj2D7wadL3TTgUbVnBWSJG",
+        "solscan": "https://solscan.io/token/EdP5DZWXeeUNzVLQwYuUgzMj2D7wadL3TTgUbVnBWSJG",
+        "birdeye": "https://birdeye.so/token/EdP5DZWXeeUNzVLQwYuUgzMj2D7wadL3TTgUbVnBWSJG?chain=solana",
+        "pumpfun": "https://pump.fun/coin/EdP5DZWXeeUNzVLQwYuUgzMj2D7wadL3TTgUbVnBWSJG"
+      }
+    },
+    {
+      "ts": "2026-11-03T10:52:44.700749+01:00",
+      "stage": "Scanner",
+      "symbol": "OMBRO",
+      "mint": "8nq6KwQtX6tsyXPiUzQLXUz8nG8HBB3KBTHEYUccVqt",
+      "decision": "KILL",
+      "reason": "copycat_non_pump_mint",
+      "links": {
+        "dexscreener": "https://dexscreener.com/solana/8nq6KwQtX6tsyXPiUzQLXUz8nG8HBB3KBTHEYUccVqt",
+        "solscan": "https://solscan.io/token/8nq6KwQtX6tsyXPiUzQLXUz8nG8HBB3KBTHEYUccVqt",
+        "birdeye": "https://birdeye.so/token/8nq6KwQtX6tsyXPiUzQLXUz8nG8HBB3KBTHEYUccVqt?chain=solana",
+        "pumpfun": "https://pump.fun/coin/8nq6KwQtX6tsyXPiUzQLXUz8nG8HBB3KBTHEYUccVqt"
+      }
+    },
+    {
       "ts": "2026-11-03T10:51:00.993950+01:00",
       "stage": "Scanner",
       "symbol": "ELE",
@@ -1372,90 +1456,6 @@
         "solscan": "https://solscan.io/token/HYGhcq7aWD6ST8BQYsAjrHadRMzLSFENU5Ynvyb68prg",
         "birdeye": "https://birdeye.so/token/HYGhcq7aWD6ST8BQYsAjrHadRMzLSFENU5Ynvyb68prg?chain=solana",
         "pumpfun": "https://pump.fun/coin/HYGhcq7aWD6ST8BQYsAjrHadRMzLSFENU5Ynvyb68prg"
-      }
-    },
-    {
-      "ts": "2026-11-02T22:00:22.513039+01:00",
-      "stage": "Scanner",
-      "symbol": "PEAK",
-      "mint": "6Q4DwfLSwvj256kk5yxuzLS9ZhamatqeKh2XyNrg7gTA",
-      "decision": "KILL",
-      "reason": "copycat_non_pump_mint",
-      "links": {
-        "dexscreener": "https://dexscreener.com/solana/6Q4DwfLSwvj256kk5yxuzLS9ZhamatqeKh2XyNrg7gTA",
-        "solscan": "https://solscan.io/token/6Q4DwfLSwvj256kk5yxuzLS9ZhamatqeKh2XyNrg7gTA",
-        "birdeye": "https://birdeye.so/token/6Q4DwfLSwvj256kk5yxuzLS9ZhamatqeKh2XyNrg7gTA?chain=solana",
-        "pumpfun": "https://pump.fun/coin/6Q4DwfLSwvj256kk5yxuzLS9ZhamatqeKh2XyNrg7gTA"
-      }
-    },
-    {
-      "ts": "2026-11-02T22:00:22.509250+01:00",
-      "stage": "Scanner",
-      "symbol": "Karma",
-      "mint": "HyU5p8Mqf8xsw7t4WVQUgfmFqZ4eQY86JP8zeZuPyFBF",
-      "decision": "KILL",
-      "reason": "copycat_non_pump_mint",
-      "links": {
-        "dexscreener": "https://dexscreener.com/solana/HyU5p8Mqf8xsw7t4WVQUgfmFqZ4eQY86JP8zeZuPyFBF",
-        "solscan": "https://solscan.io/token/HyU5p8Mqf8xsw7t4WVQUgfmFqZ4eQY86JP8zeZuPyFBF",
-        "birdeye": "https://birdeye.so/token/HyU5p8Mqf8xsw7t4WVQUgfmFqZ4eQY86JP8zeZuPyFBF?chain=solana",
-        "pumpfun": "https://pump.fun/coin/HyU5p8Mqf8xsw7t4WVQUgfmFqZ4eQY86JP8zeZuPyFBF"
-      }
-    },
-    {
-      "ts": "2026-11-02T22:00:19.919309+01:00",
-      "stage": "Scanner",
-      "symbol": "God's Frog",
-      "mint": "833hfwYLbJeyRYZhNx2Mp1FM9vC5JVrdjWpEPcs2uG3N",
-      "decision": "KILL",
-      "reason": "copycat_non_pump_mint",
-      "links": {
-        "dexscreener": "https://dexscreener.com/solana/833hfwYLbJeyRYZhNx2Mp1FM9vC5JVrdjWpEPcs2uG3N",
-        "solscan": "https://solscan.io/token/833hfwYLbJeyRYZhNx2Mp1FM9vC5JVrdjWpEPcs2uG3N",
-        "birdeye": "https://birdeye.so/token/833hfwYLbJeyRYZhNx2Mp1FM9vC5JVrdjWpEPcs2uG3N?chain=solana",
-        "pumpfun": "https://pump.fun/coin/833hfwYLbJeyRYZhNx2Mp1FM9vC5JVrdjWpEPcs2uG3N"
-      }
-    },
-    {
-      "ts": "2026-11-02T21:59:23.767089+01:00",
-      "stage": "Scanner",
-      "symbol": "dictator",
-      "mint": "3Mjj7iD3ActAshD1pz8rgDLy2DvcqFwge8ogHx4zpump",
-      "decision": "KILL",
-      "reason": "liquidity_below_floor:752.18<5000",
-      "links": {
-        "dexscreener": "https://dexscreener.com/solana/3Mjj7iD3ActAshD1pz8rgDLy2DvcqFwge8ogHx4zpump",
-        "solscan": "https://solscan.io/token/3Mjj7iD3ActAshD1pz8rgDLy2DvcqFwge8ogHx4zpump",
-        "birdeye": "https://birdeye.so/token/3Mjj7iD3ActAshD1pz8rgDLy2DvcqFwge8ogHx4zpump?chain=solana",
-        "pumpfun": "https://pump.fun/coin/3Mjj7iD3ActAshD1pz8rgDLy2DvcqFwge8ogHx4zpump"
-      }
-    },
-    {
-      "ts": "2026-11-02T21:58:15.343942+01:00",
-      "stage": "Scanner",
-      "symbol": "FRANKG5",
-      "mint": "BQC9TLWSVUZhuocB4YXx6s4SsxcgsJhgMEJepqGCpump",
-      "decision": "KILL",
-      "reason": "liquidity_below_floor:8.98<5000, liquidity_gt_fdv:liq=9>fdv=5",
-      "links": {
-        "dexscreener": "https://dexscreener.com/solana/BQC9TLWSVUZhuocB4YXx6s4SsxcgsJhgMEJepqGCpump",
-        "solscan": "https://solscan.io/token/BQC9TLWSVUZhuocB4YXx6s4SsxcgsJhgMEJepqGCpump",
-        "birdeye": "https://birdeye.so/token/BQC9TLWSVUZhuocB4YXx6s4SsxcgsJhgMEJepqGCpump?chain=solana",
-        "pumpfun": "https://pump.fun/coin/BQC9TLWSVUZhuocB4YXx6s4SsxcgsJhgMEJepqGCpump"
-      }
-    },
-    {
-      "ts": "2026-11-02T21:58:12.743739+01:00",
-      "stage": "Scanner",
-      "symbol": "Tazebra",
-      "mint": "CUMPjXbasf76PccrHtDm1CnBjvkYJaMjThKf5pw6bonk",
-      "decision": "KILL",
-      "reason": "copycat_non_pump_mint",
-      "links": {
-        "dexscreener": "https://dexscreener.com/solana/CUMPjXbasf76PccrHtDm1CnBjvkYJaMjThKf5pw6bonk",
-        "solscan": "https://solscan.io/token/CUMPjXbasf76PccrHtDm1CnBjvkYJaMjThKf5pw6bonk",
-        "birdeye": "https://birdeye.so/token/CUMPjXbasf76PccrHtDm1CnBjvkYJaMjThKf5pw6bonk?chain=solana",
-        "pumpfun": "https://pump.fun/coin/CUMPjXbasf76PccrHtDm1CnBjvkYJaMjThKf5pw6bonk"
       }
     }
   ],
