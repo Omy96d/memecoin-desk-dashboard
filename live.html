@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="theme-color" content="#000000">
+<title>Desk Omar · PAPER</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif}
+.wrap{max-width:480px;margin:0 auto;padding:calc(8px + env(safe-area-inset-top)) 16px calc(28px + env(safe-area-inset-bottom))}
+.hdr{display:flex;align-items:center;justify-content:space-between;padding-top:8px;margin-bottom:10px}
+.brand{font-weight:800;font-size:18px;letter-spacing:-.3px}
+.paper{background:#3D2A08;color:#FFB84D;font-weight:900;font-size:15px;letter-spacing:1.5px;padding:7px 16px;border-radius:999px;border:2px solid #FFB84D}
+.upd{background:#141416;border:1px solid #232326;border-radius:14px;padding:10px 12px;margin-bottom:16px}
+.upd b{color:#fff;font-size:14px}
+.upd .n{color:#8E8E93;font-size:12px;margin-top:4px;line-height:1.4}
+.upd .stale{color:#FFB84D}
+.bal{font-size:44px;font-weight:800;letter-spacing:-1.2px;line-height:1.05;font-variant-numeric:tabular-nums}
+.usd{color:#8E8E93;font-size:14px;margin-top:4px}
+.pnlrow{display:flex;align-items:center;gap:10px;margin:8px 0;flex-wrap:wrap}
+.pnl{font-weight:700;font-size:15px}
+.mult{font-weight:800;font-size:13px;padding:4px 10px;border-radius:999px}
+.meta{color:#636366;font-size:12px;margin-bottom:10px}
+.chart{margin:0 -8px;height:180px}
+.chips{display:flex;gap:4px;justify-content:space-between;margin:4px 0 22px;background:#0A0A0A;border-radius:999px;padding:3px}
+.chip{border:none;cursor:pointer;padding:6px 14px;border-radius:999px;font-size:13px;font-weight:700;letter-spacing:.2px;background:transparent;color:#8E8E93;flex:1}
+.chip.on{background:#1C1C1E;color:#fff}
+.h2{font-weight:800;font-size:17px;margin-bottom:12px;letter-spacing:-.2px}
+.agents{display:flex;gap:10px;overflow-x:auto;padding-bottom:8px;margin-bottom:22px;-webkit-overflow-scrolling:touch}
+.ag{flex:0 0 auto;width:140px;background:#141416;border-radius:18px;padding:14px 14px 12px;border:1px solid #232326;position:relative}
+.ag .ic{width:28px;height:28px;border-radius:999px;margin-bottom:10px}
+.ag .nm{font-weight:700;font-size:14px;margin-bottom:6px}
+.ag .ct{font-weight:800;font-size:22px;line-height:1}
+.ag .sb{color:#8E8E93;font-size:12px;margin-top:4px}
+.ag .st{font-size:11px;font-weight:700;margin-top:8px;display:flex;align-items:center;gap:5px}
+.dot{width:7px;height:7px;border-radius:9px;display:inline-block}
+.ag.soon{opacity:.6;border-style:dashed}
+.ring{position:absolute;top:12px;right:12px}
+.row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #1C1C1E}
+.row.new{animation:slide .5s ease-out}
+@keyframes slide{from{transform:translateY(-14px);opacity:0}to{transform:none;opacity:1}}
+.gl{width:40px;height:40px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;flex-shrink:0}
+.tt{color:#fff;font-weight:700;font-size:15px;line-height:1.2}
+.dt{color:#8E8E93;font-size:12px;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rp{text-align:right;flex-shrink:0;font-weight:700;font-size:13px}
+.toast{position:fixed;left:50%;top:calc(12px + env(safe-area-inset-top));transform:translate(-50%,-140%);transition:transform .35s ease;background:#141416;border:1px solid #2A2A2E;border-radius:16px;padding:12px 16px;min-width:260px;max-width:92vw;z-index:9;box-shadow:0 8px 30px rgba(0,0,0,.6)}
+.toast.show{transform:translate(-50%,0)}
+.foot{margin-top:18px;text-align:center;color:#636366;font-size:12px;line-height:1.5}
+.empty{color:#8E8E93;font-size:13px;padding:12px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hdr"><div class="brand">Desk Omar</div><div class="paper" id="mode">PAPER</div></div>
+  <div class="upd"><b id="upd">Ultimo aggiornamento dati: —</b>
+    <div class="n">Fotografia dei dati, <span class="stale">non si aggiorna in tempo reale</span>: la pagina ricontrolla il file ogni 5 secondi, ma i numeri cambiano solo quando viene pubblicato un nuovo aggiornamento. <span id="age"></span></div></div>
+
+  <div class="bal" id="bal">— SOL</div>
+  <div class="usd" id="usd">—</div>
+  <div class="pnlrow"><div class="pnl" id="pnl">—</div><div class="mult" id="mult">—</div></div>
+  <div class="meta" id="meta">—</div>
+
+  <div class="chart" id="chart"></div>
+  <div class="chips" id="chips"></div>
+
+  <div class="h2">Agenti <span style="color:#636366;font-size:12px;font-weight:600">· stato al momento dei dati</span></div>
+  <div class="agents" id="agents"></div>
+
+  <div class="h2" style="margin-bottom:4px">Attività</div>
+  <div id="act"><div class="empty">nessun dato</div></div>
+
+  <div class="foot" id="foot">Solo dati reali del desk PAPER · nessun ordine reale</div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+(function(){
+"use strict";
+var GREEN="#3DFF8A", RED="#FF4D6A";
+var data=null, lastGen=null, tf="ALL", shownBal=null, seenAct={}, firstLoad=true, toastQ=[], toastBusy=false;
+var TFS=[["1H","1H",3600],["24H","24H",86400],["7G","7G",604800],["ALL","Tutto",0]];
+
+function $(id){return document.getElementById(id);}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+function itNum(n,d){if(n==null||isNaN(n))return "—";var s=Math.abs(n).toFixed(d);var p=s.split(".");p[0]=p[0].replace(/\B(?=(\d{3})+(?!\d))/g,".");return (n<0?"−":"")+p.join(",");}
+function itSigned(n,d){if(n==null||isNaN(n))return "—";return (n>0?"+":n<0?"−":"")+itNum(Math.abs(n),d);}
+var fmtT=null,fmtDT=null;
+try{fmtT=new Intl.DateTimeFormat("it-IT",{timeZone:"Europe/Rome",hour:"2-digit",minute:"2-digit"});
+fmtDT=new Intl.DateTimeFormat("it-IT",{timeZone:"Europe/Rome",day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"});}catch(e){}
+function tHM(ts){if(!ts)return "—";var d=new Date(ts*1000);return fmtT?fmtT.format(d):d.toTimeString().slice(0,5);}
+function tDT(ts){if(!ts)return "—";var d=new Date(ts*1000);return fmtDT?fmtDT.format(d).replace(",",""):d.toLocaleString();}
+
+/* ---- chips ---- */
+function drawChips(){
+  $("chips").innerHTML=TFS.map(function(t){return '<button type="button" class="chip'+(tf===t[0]?" on":"")+'" data-k="'+t[0]+'">'+t[1]+'</button>';}).join("");
+}
+$("chips").addEventListener("click",function(e){var k=e.target&&e.target.getAttribute("data-k");if(k){tf=k;drawChips();drawChart(true);}});
+
+/* ---- balance count-up ---- */
+function animateBal(to){
+  if(to==null){$("bal").textContent="— SOL";return;}
+  var from=shownBal==null?to:shownBal; shownBal=to;
+  if(from===to){$("bal").textContent=itNum(to,4)+" SOL";return;}
+  var t0=null,dur=900;
+  function step(ts){if(!t0)t0=ts;var k=Math.min(1,(ts-t0)/dur);k=1-Math.pow(1-k,3);
+    $("bal").textContent=itNum(from+(to-from)*k,4)+" SOL";if(k<1)requestAnimationFrame(step);}
+  requestAnimationFrame(step);
+}
+
+/* ---- chart ---- */
+function drawChart(animate){
+  var el=$("chart");
+  if(!data||!data.equity||!data.equity.length){el.innerHTML='<div class="empty">nessun dato</div>';return;}
+  var eq=data.equity, ref=data.generated_at, span=0;
+  for(var i=0;i<TFS.length;i++)if(TFS[i][0]===tf)span=TFS[i][2];
+  var pts=eq;
+  if(span){var cut=ref-span;pts=eq.filter(function(p){return p.ts>=cut;});
+    var before=null;for(var j=eq.length-1;j>=0;j--)if(eq[j].ts<cut){before=eq[j];break;}
+    if(before)pts=[{ts:cut,bal:before.bal}].concat(pts);
+  }
+  if(!pts.length){el.innerHTML='<div class="empty">nessun dato in questo intervallo</div>';return;}
+  var last=pts[pts.length-1];
+  pts=pts.concat([{ts:ref,bal:last.bal}]); /* flat to "dati del" time, no invented moves */
+  var W=360,H=180,px=8,py=12;
+  var t0=pts[0].ts,t1=Math.max(ref,t0+1);
+  var vals=pts.map(function(p){return p.bal;});
+  var mn=Math.min.apply(null,vals),mx=Math.max.apply(null,vals),sp=Math.max(mx-mn,0.001);
+  var xs=pts.map(function(p){return px+(p.ts-t0)/(t1-t0)*(W-2*px);});
+  var ys=vals.map(function(v){return py+(1-(v-mn)/sp)*(H-2*py);});
+  /* step line: balance changes only at exits */
+  var d="M "+xs[0].toFixed(1)+" "+ys[0].toFixed(1);
+  for(var k=1;k<xs.length;k++)d+=" L "+xs[k].toFixed(1)+" "+ys[k-1].toFixed(1)+" L "+xs[k].toFixed(1)+" "+ys[k].toFixed(1);
+  var area=d+" L "+xs[xs.length-1].toFixed(1)+" "+H+" L "+xs[0].toFixed(1)+" "+H+" Z";
+  var neg=pts[pts.length-1].bal<pts[0].bal || (span===0 && data.pnl_sol<0);
+  var c=neg?RED:GREEN, f=neg?"255,77,106":"61,255,138";
+  el.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" width="100%" height="180" preserveAspectRatio="none" style="display:block">'+
+    '<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba('+f+',0.35)"/><stop offset="100%" stop-color="rgba('+f+',0)"/></linearGradient></defs>'+
+    '<path id="ar" d="'+area+'" fill="url(#g)" style="transition:opacity .9s;opacity:'+(animate?0:1)+'"/>'+
+    '<path id="ln" d="'+d+'" fill="none" stroke="'+c+'" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>'+
+    '<circle cx="'+xs[xs.length-1]+'" cy="'+ys[ys.length-1]+'" r="4" fill="'+c+'"/></svg>';
+  if(animate){var ln=$("ln");try{var L=ln.getTotalLength();ln.style.strokeDasharray=L;ln.style.strokeDashoffset=L;
+    ln.getBoundingClientRect();ln.style.transition="stroke-dashoffset 1.4s ease-out";ln.style.strokeDashoffset="0";}catch(e){}
+    setTimeout(function(){var a=$("ar");if(a)a.style.opacity=1;},50);}
+}
+
+/* ---- agents ---- */
+function ring(){
+  return '<svg class="ring" width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="14" fill="none" stroke="#2A2A2E" stroke-width="3"/>'+
+    '<circle cx="17" cy="17" r="14" fill="none" stroke="#636366" stroke-width="3" stroke-dasharray="4 4" transform="rotate(-90 17 17)"/>'+
+    '<text x="17" y="21" text-anchor="middle" font-size="10" font-weight="700" fill="#8E8E93">30s</text></svg>';
+}
+function drawAgents(){
+  var a=(data&&data.agents)||[], h="";
+  a.forEach(function(g){
+    var sc=g.status==="attivo"?GREEN:g.status==="fermo"?RED:g.status==="in attesa"?"#FFB84D":"#636366";
+    h+='<div class="ag"><div class="ic" style="background:'+g.tone+'22;border:1px solid '+g.tone+'55"></div>'+
+      '<div class="nm">'+esc(g.name)+'</div><div class="ct" style="color:'+g.tone+'">'+esc(g.count||"—")+'</div>'+
+      '<div class="sb">'+esc(g.sub)+'</div>'+
+      '<div class="st" style="color:'+sc+'"><span class="dot" style="background:'+sc+'"></span>'+esc(g.status)+'</div>'+
+      '<div class="sb" style="font-size:11px">'+esc(g.last_label)+' '+esc(g.last||"—")+'</div></div>';
+  });
+  if(data&&data.copier){
+    h+='<div class="ag soon">'+ring()+'<div class="ic" style="background:#63636622;border:1px solid #63636655"></div>'+
+      '<div class="nm">Copier</div><div class="ct" style="color:#636366">—</div><div class="sb">copy-trading · ciclo 30s</div>'+
+      '<div class="st" style="color:#8E8E93"><span class="dot" style="background:#636366"></span>in arrivo · non attivo</div></div>';
+  }
+  $("agents").innerHTML=h||'<div class="empty">nessun dato</div>';
+}
+
+/* ---- activity ---- */
+function rowHtml(it,isNew){
+  var pos=it.pnl!=null&&it.pnl>=0;
+  var bg=it.kind==="buy"?"#1A3D2A":it.kind==="sell"?(pos?"#1A3D2A":"#3D1A22"):"#2A2A2E";
+  var fg=it.kind==="buy"?GREEN:it.kind==="sell"?(pos?GREEN:RED):"#A1A1A6";
+  var gl=it.kind==="buy"?"↓":it.kind==="sell"?"↑":"×";
+  var pc=it.pnl==null?"#8E8E93":(pos?GREEN:RED);
+  return '<div class="row'+(isNew?" new":"")+'"><div class="gl" style="background:'+bg+';color:'+fg+'">'+gl+'</div>'+
+    '<div style="flex:1;min-width:0"><div class="tt">'+esc(it.title)+'</div><div class="dt">'+esc(it.detail)+' · '+tHM(it.ts)+'</div></div>'+
+    '<div class="rp" style="color:'+pc+'">'+(it.pnl!=null?itSigned(it.pnl,5)+" SOL":"—")+'</div></div>';
+}
+function drawActivity(){
+  var a=(data&&data.activity)||[];
+  if(!a.length){$("act").innerHTML='<div class="empty">nessun dato</div>';return;}
+  var h="";a.forEach(function(it){var isNew=!firstLoad&&!seenAct[it.id];h+=rowHtml(it,isNew);});
+  a.forEach(function(it){seenAct[it.id]=1;});
+  $("act").innerHTML=h;
+}
+
+/* ---- toast on trade close (only real closes not yet seen on this device) ---- */
+function showNextToast(){
+  if(toastBusy||!toastQ.length)return;toastBusy=true;
+  var t=toastQ.shift(),pos=t.pnl_sol>=0,el=$("toast");
+  el.innerHTML='<div style="font-size:12px;color:#8E8E93">Trade chiuso · PAPER · '+tDT(t.exit_ts)+'</div>'+
+    '<div style="font-weight:800;font-size:16px;margin-top:3px">'+esc(t.symbol)+' <span style="color:'+(pos?GREEN:RED)+'">'+itSigned(t.pnl_sol,5)+' SOL ('+itSigned(t.pnl_pct,1)+'%)</span></div>';
+  el.className="toast show";
+  setTimeout(function(){el.className="toast";setTimeout(function(){toastBusy=false;showNextToast();},400);},4500);
+}
+function checkCloses(){
+  var cl=(data&&data.closed_trades)||[];if(!cl.length)return;
+  var key="deskLiveLastClosedId",seen=null;
+  try{seen=parseInt(localStorage.getItem(key),10);}catch(e){}
+  var maxId=cl[cl.length-1].id;
+  if(seen!=null&&!isNaN(seen)){cl.forEach(function(t){if(t.id>seen)toastQ.push(t);});if(toastQ.length>3)toastQ=toastQ.slice(-3);}
+  try{localStorage.setItem(key,String(maxId));}catch(e){}
+  showNextToast();
+}
+
+/* ---- render ---- */
+function render(){
+  var d=data;
+  $("mode").textContent=(d.mode||"PAPER").toUpperCase()==="PAPER"?"PAPER":esc(d.mode);
+  $("upd").textContent="Ultimo aggiornamento dati: "+tDT(d.generated_at)+" (ora di Roma)";
+  animateBal(d.balance_sol);
+  $("usd").textContent=d.sol_usd&&d.balance_sol!=null?"≈ $"+itNum(d.balance_sol*d.sol_usd,2)+" · SOL $"+itNum(d.sol_usd,2):"≈ $— · prezzo SOL non disponibile";
+  var neg=d.pnl_sol<0,col=neg?RED:GREEN;
+  var pct=d.start_sol?(d.balance_sol/d.start_sol-1)*100:null;
+  $("pnl").style.color=col;
+  $("pnl").textContent=itSigned(d.pnl_sol,5)+" SOL ("+itSigned(pct,1)+"%)"+(d.sol_usd?" · "+itSigned(d.pnl_sol*d.sol_usd,2)+" $":"");
+  var m=$("mult");m.style.color=col;m.style.background=neg?"#3D1520":"#143D28";m.textContent=d.start_sol?itNum(d.balance_sol/d.start_sol,2)+"x":"—";
+  var s=d.stats||{};
+  $("meta").textContent="Partito da "+itNum(d.start_sol,4)+" SOL · "+(s.closed==null?"—":s.closed)+" trade chiusi · "+(s.wins==null?"—":s.wins)+"W/"+(s.losses==null?"—":s.losses)+"L · WR "+(s.win_rate==null?"—":itNum(s.win_rate,1)+"%")+" · aperte "+(s.open==null?"—":s.open);
+  drawChart(true);drawAgents();drawActivity();checkCloses();
+  $("foot").innerHTML="Solo dati reali del desk PAPER · nessun ordine reale<br>Sessione dal "+tDT(d.session_started_rome?Date.parse(d.session_started_rome)/1000:null)+
+    (d.stop_at_local?" · stop programmato "+esc(d.stop_at_local.replace("T"," ").slice(5,16)):"")+"<br>Dati del "+tDT(d.generated_at)+" (ora di Roma)";
+  firstLoad=false;
+}
+function ageText(){
+  if(!data)return;var mins=Math.floor((Date.now()/1000-data.generated_at)/60);
+  $("age").textContent=mins<1?"Dati di meno di un minuto fa.":"Dati di "+(mins<120?mins+" min":Math.floor(mins/60)+" ore")+" fa.";
+}
+function load(){
+  var x=new XMLHttpRequest();
+  x.open("GET","live.json?t="+Date.now(),true);
+  x.onload=function(){if(x.status!==200)return;try{var d=JSON.parse(x.responseText);
+    if(d.generated_at!==lastGen){lastGen=d.generated_at;data=d;render();}ageText();}catch(e){}};
+  x.send();
+}
+drawChips();load();setInterval(load,5000);setInterval(ageText,30000);
+document.addEventListener("visibilitychange",function(){if(!document.hidden)load();});
+})();
+</script>
+</body>
+</html>
