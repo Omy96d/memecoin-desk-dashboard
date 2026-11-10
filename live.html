@@ -49,6 +49,14 @@ html,body{margin:0;background:#000;color:#fff;font-family:-apple-system,BlinkMac
 .toast{position:fixed;left:50%;top:calc(12px + env(safe-area-inset-top));transform:translate(-50%,-140%);transition:transform .35s ease;background:#141416;border:1px solid #2A2A2E;border-radius:16px;padding:12px 16px;min-width:260px;max-width:92vw;z-index:9;box-shadow:0 8px 30px rgba(0,0,0,.6)}
 .toast.show{transform:translate(-50%,0)}
 .foot{margin-top:18px;text-align:center;color:#636366;font-size:12px;line-height:1.5}
+.card{background:#141416;border:1px solid #232326;border-radius:16px;padding:14px;margin-bottom:10px}
+.lbl{color:#8E8E93;font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;margin-bottom:6px}
+.wl{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #1C1C1E;font-size:14px}
+.wl:last-child{border-bottom:none}
+.mono{font-family:ui-monospace,Menlo,monospace;color:#A1A1A6;font-size:12px}
+.warn{color:#FFB84D;font-size:12px;line-height:1.45;margin-top:8px}
+.ring .arc{transition:none}
+@keyframes ringspin{from{stroke-dashoffset:0}to{stroke-dashoffset:88}}
 .empty{color:#8E8E93;font-size:13px;padding:12px 0}
 </style>
 </head>
@@ -69,7 +77,10 @@ html,body{margin:0;background:#000;color:#fff;font-family:-apple-system,BlinkMac
   <div class="h2">Agenti <span style="color:#636366;font-size:12px;font-weight:600">· stato al momento dei dati</span></div>
   <div class="agents" id="agents"></div>
 
-  <div class="h2" style="margin-bottom:4px">Attività</div>
+  <div class="h2">Copy <span id="cpst" style="font-size:12px;font-weight:700"></span></div>
+  <div id="copy"><div class="empty">nessun dato</div></div>
+
+  <div class="h2" style="margin-bottom:4px;margin-top:22px">Attività</div>
   <div id="act"><div class="empty">nessun dato</div></div>
 
   <div class="foot" id="foot">Solo dati reali del desk PAPER · nessun ordine reale</div>
@@ -146,11 +157,16 @@ function drawChart(animate){
 }
 
 /* ---- agents ---- */
-function ring(){
-  return '<svg class="ring" width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="14" fill="none" stroke="#2A2A2E" stroke-width="3"/>'+
-    '<circle cx="17" cy="17" r="14" fill="none" stroke="#636366" stroke-width="3" stroke-dasharray="4 4" transform="rotate(-90 17 17)"/>'+
-    '<text x="17" y="21" text-anchor="middle" font-size="10" font-weight="700" fill="#8E8E93">30s</text></svg>';
+function ring(cp){
+  /* animated only if the desk log shows the real poll cycle and the Copier was active at snapshot time */
+  var sec=cp&&cp.poll_sec_running, fresh=data&&(Date.now()/1000-data.generated_at)<600;
+  var anim=!!(sec&&cp.status==="attivo"&&fresh);
+  var txt=anim?sec+"s":(cp&&cp.last_seen_hm?cp.last_seen_hm:"—");
+  return '<svg class="ring" width="38" height="38" viewBox="0 0 34 34"><circle cx="17" cy="17" r="14" fill="none" stroke="#2A2A2E" stroke-width="3"/>'+
+    (anim?'<circle class="arc" cx="17" cy="17" r="14" fill="none" stroke="#5BFFB0" stroke-width="3" stroke-dasharray="88" stroke-dashoffset="0" transform="rotate(-90 17 17)" style="animation:ringspin '+sec+'s linear infinite"/>':'')+
+    '<text x="17" y="20.5" text-anchor="middle" font-size="'+(anim?10:8)+'" font-weight="700" fill="#A1A1A6">'+esc(txt)+'</text></svg>';
 }
+function stColor(st){return st==="attivo"?GREEN:st==="fermo"?RED:st==="in attesa"?"#FFB84D":"#636366";}
 function drawAgents(){
   var a=(data&&data.agents)||[], h="";
   a.forEach(function(g){
@@ -161,12 +177,56 @@ function drawAgents(){
       '<div class="st" style="color:'+sc+'"><span class="dot" style="background:'+sc+'"></span>'+esc(g.status)+'</div>'+
       '<div class="sb" style="font-size:11px">'+esc(g.last_label)+' '+esc(g.last||"—")+'</div></div>';
   });
-  if(data&&data.copier){
-    h+='<div class="ag soon">'+ring()+'<div class="ic" style="background:#63636622;border:1px solid #63636655"></div>'+
-      '<div class="nm">Copier</div><div class="ct" style="color:#636366">—</div><div class="sb">copy-trading · ciclo 30s</div>'+
-      '<div class="st" style="color:#8E8E93"><span class="dot" style="background:#636366"></span>in arrivo · non attivo</div></div>';
+  var cp=data&&data.copy;
+  if(cp){
+    var sc2=stColor(cp.status), nT=(cp.trades_open||[]).length+(cp.trades_closed||[]).length;
+    h+='<div class="ag">'+ring(cp)+'<div class="ic" style="background:#5BFFB022;border:1px solid #5BFFB055"></div>'+
+      '<div class="nm">Copier</div><div class="ct" style="color:#5BFFB0">'+(cp.wallets||[]).length+'</div><div class="sb">wallet seguiti · '+nT+' trade</div>'+
+      '<div class="st" style="color:'+sc2+'"><span class="dot" style="background:'+sc2+'"></span>'+esc(cp.status)+'</div>'+
+      '<div class="sb" style="font-size:11px">ultima attività '+esc(cp.last_seen_hm||"—")+'</div></div>';
   }
   $("agents").innerHTML=h||'<div class="empty">nessun dato</div>';
+}
+
+/* ---- copy ---- */
+function tradeRow(t,open){
+  var p=t.pnl_sol,pos=p>=0;
+  return '<div class="wl"><div>'+esc(t.symbol||"—")+' <span class="mono">#'+t.id+'</span><div class="mono">'+(open?"aperto "+tDT(t.entry_ts)+" · "+itNum(t.ticket_sol,4)+" SOL":"chiuso "+tDT(t.exit_ts)+" · "+esc(t.status))+'</div></div>'+
+    '<div style="font-weight:700;color:'+(pos?GREEN:RED)+'">'+itSigned(p,5)+' SOL<div class="mono" style="text-align:right">'+itSigned(t.pnl_pct,1)+'%</div></div></div>';
+}
+function drawCopy(){
+  var cp=data&&data.copy, el=$("copy");
+  if(!cp){el.innerHTML='<div class="empty">nessun dato (blocco copy_trade assente)</div>';$("cpst").textContent="";return;}
+  var sc=stColor(cp.status);
+  $("cpst").innerHTML='<span style="color:'+sc+'">· '+esc(cp.status)+'</span>';
+  var h='';
+  /* P&L */
+  var p=cp.pnl_sol, pc=p==null?"#8E8E93":(p>=0?GREEN:RED);
+  var nO=(cp.trades_open||[]).length, nC=(cp.trades_closed||[]).length;
+  h+='<div class="card"><div class="lbl">P&amp;L copy (separato dal desk)</div>'+
+    '<div style="font-size:26px;font-weight:800;color:'+pc+'">'+(p==null?"—":itSigned(p,5)+" SOL")+'</div>'+
+    '<div class="usd">'+(cp.pnl_usd==null?"≈ $—":"≈ "+itSigned(cp.pnl_usd,2)+" $")+' · '+nC+' chiusi ('+cp.wins+'W/'+cp.losses+'L) · '+nO+' aperti</div></div>';
+  /* mode */
+  h+='<div class="card"><div class="lbl">Modalità</div>'+
+    '<div style="font-size:13px;line-height:1.45"><b>In esecuzione</b>'+(cp.mode_running_since?' (dal '+tDT(Date.parse(cp.mode_running_since)/1000)+')':'')+': '+esc(cp.mode_running||"nessun dato")+'</div>'+
+    '<div style="font-size:13px;line-height:1.45;margin-top:8px;color:#D1D1D6"><b>Configurata</b>'+(cp.config_mtime_rome?' (config del '+tDT(Date.parse(cp.config_mtime_rome)/1000)+')':'')+': '+esc(cp.mode_config||"nessun dato")+'</div>'+
+    (cp.config_changed_after_start?'<div class="warn">La configurazione è stata modificata dopo l’avvio del desk: la modalità configurata vale dal prossimo riavvio del desk. Fino ad allora conta quella “in esecuzione”.</div>':'')+
+    (cp.doc_title?'<div class="mono" style="margin-top:8px">Doc: '+esc(cp.doc_title)+(cp.doc_mtime_rome?' · '+tDT(Date.parse(cp.doc_mtime_rome)/1000):'')+'</div>':'')+'</div>';
+  /* wallets */
+  var w=cp.wallets||[];
+  h+='<div class="card"><div class="lbl">Wallet seguiti · '+w.length+'</div>'+
+    (w.length?w.map(function(x){return '<div class="wl"><b>'+esc(x.label)+'</b><span class="mono">'+esc(x.short)+'</span></div>';}).join(""):'<div class="empty">nessun wallet</div>')+'</div>';
+  /* trades */
+  h+='<div class="card"><div class="lbl">Posizioni copy aperte · '+nO+'</div>'+(nO?cp.trades_open.map(function(t){return tradeRow(t,true);}).join(""):'<div class="empty">nessuna</div>')+'</div>';
+  h+='<div class="card"><div class="lbl">Trade copy chiusi · '+nC+'</div>'+(nC?cp.trades_closed.slice().reverse().map(function(t){return tradeRow(t,false);}).join(""):'<div class="empty">nessuno</div>')+'</div>';
+  /* events */
+  var ev=cp.events||[];
+  h+='<div class="card"><div class="lbl">Ultimi segnali COPY</div>'+(ev.length?ev.map(function(e){
+    var c=e.type==="COPY_SIGNAL"?GREEN:e.type==="COPY_SKIP"?"#FFB84D":"#A1A1A6";
+    return '<div class="wl" style="align-items:flex-start"><div style="min-width:0;flex:1"><span style="color:'+c+';font-weight:700">'+esc(e.label)+'</span> '+esc(e.symbol||"—")+
+      (e.wallet?' <span class="mono">· '+esc(e.wallet)+'</span>':'')+'<div class="mono" style="white-space:normal">'+esc(e.reason||"motivo non disponibile")+'</div></div>'+
+      '<div class="mono" style="flex-shrink:0;margin-left:8px">'+tHM(e.ts)+'</div></div>';}).join(""):'<div class="empty">nessun evento COPY_SIGNAL / COPY_SKIP</div>')+'</div>';
+  el.innerHTML=h;
 }
 
 /* ---- activity ---- */
@@ -220,8 +280,8 @@ function render(){
   $("pnl").textContent=itSigned(d.pnl_sol,5)+" SOL ("+itSigned(pct,1)+"%)"+(d.sol_usd?" · "+itSigned(d.pnl_sol*d.sol_usd,2)+" $":"");
   var m=$("mult");m.style.color=col;m.style.background=neg?"#3D1520":"#143D28";m.textContent=d.start_sol?itNum(d.balance_sol/d.start_sol,2)+"x":"—";
   var s=d.stats||{};
-  $("meta").textContent="Partito da "+itNum(d.start_sol,4)+" SOL · "+(s.closed==null?"—":s.closed)+" trade chiusi · "+(s.wins==null?"—":s.wins)+"W/"+(s.losses==null?"—":s.losses)+"L · WR "+(s.win_rate==null?"—":itNum(s.win_rate,1)+"%")+" · aperte "+(s.open==null?"—":s.open);
-  drawChart(true);drawAgents();drawActivity();checkCloses();
+  $("meta").textContent="Desk: partito da "+itNum(d.start_sol,4)+" SOL · "+(s.closed==null?"—":s.closed)+" trade chiusi · "+(s.wins==null?"—":s.wins)+"W/"+(s.losses==null?"—":s.losses)+"L · WR "+(s.win_rate==null?"—":itNum(s.win_rate,1)+"%")+" · aperte "+(s.open==null?"—":s.open)+(d.copy_pnl_sol!=null?" · saldo = desk "+itSigned(d.desk_pnl_sol,5)+" + copy "+itSigned(d.copy_pnl_sol,5)+" SOL":"");
+  drawChart(true);drawAgents();drawCopy();drawActivity();checkCloses();
   $("foot").innerHTML="Solo dati reali del desk PAPER · nessun ordine reale<br>Sessione dal "+tDT(d.session_started_rome?Date.parse(d.session_started_rome)/1000:null)+
     (d.stop_at_local?" · stop programmato "+esc(d.stop_at_local.replace("T"," ").slice(5,16)):"")+"<br>Dati del "+tDT(d.generated_at)+" (ora di Roma)";
   firstLoad=false;
